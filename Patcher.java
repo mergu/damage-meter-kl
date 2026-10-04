@@ -1180,13 +1180,17 @@ public class Patcher {
 
         c.addMethod(CtNewMethod.make(
             "public static Object tintOf(String who) {" +
-            "  Object had = tints.get(who);" +
-            "  if (had != null) { return had == NONE ? null : had; }" +
+            "  Object member = memberOf(who);" +
+            "  int colour = member == null ? Integer.MIN_VALUE : ((" + Discovery.PARTY_MEMBER + ") member).color;" +
+            "  Object[] had = (Object[]) tints.get(who);" +
+            "  if (had != null && (member == null || ((Integer) had[0]).intValue() == colour)) {" +
+            "    return had[1] == NONE ? null : had[1];" +
+            "  }" +
             "  Object made = null;" +
             "  try {" +
-            "    Object member = memberOf(who);" +
             "    if (member != null) {" +
-            "      Object paint = ((" + d.glCtxClass + ") ctx).getColorPository()." + d.colorLookupMethod + "(((" + Discovery.PARTY_MEMBER + ") member).color);" +
+            "      if (had != null) { picked.remove(who); }" +
+            "      Object paint = ((" + d.glCtxClass + ") ctx).getColorPository()." + d.colorLookupMethod + "(colour);" +
             "      if (paint != null) {" +
             "        java.awt.Color rgb = ((" + d.colorizationClass + ") paint)." + d.colorizedRootMethod + "();" +
             "        if (rgb != null) {" +
@@ -1195,7 +1199,7 @@ public class Patcher {
             "      }" +
             "    }" +
             "  } catch (Throwable t) { }" +
-            "  tints.put(who, made == null ? NONE : made);" +
+            "  tints.put(who, new Object[] { new Integer(colour), made == null ? NONE : made });" +
             "  return made;" +
             "}", c));
 
