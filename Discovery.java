@@ -1,6 +1,5 @@
 import javassist.ClassPool;
 import javassist.CtClass;
-import javassist.CtConstructor;
 import javassist.CtField;
 import javassist.CtMethod;
 import javassist.Modifier;
@@ -583,22 +582,6 @@ class Discovery {
             if (m.getName().equals(name)) return m;
         }
         return null;
-    }
-
-    static boolean extendsName(CtClass cls, String parent) {
-        try {
-            CtClass up = cls.getSuperclass();
-            return up != null && up.getName().equals(parent);
-        } catch (NotFoundException e) {
-            return false;
-        }
-    }
-
-    static boolean holdsType(CtClass cls, String type) {
-        for (CtField f : cls.getDeclaredFields()) {
-            if (typeName(f).equals(type)) return true;
-        }
-        return false;
     }
 
     static boolean declares(CtClass cls, String field) {

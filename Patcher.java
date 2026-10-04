@@ -103,8 +103,6 @@ public class Patcher {
         return out.toString();
     }
 
-    static final boolean LOUD = false;
-
     static final String INDEX_SLICE = "400";
     static final int KEPT_RUNS = 6;
 
@@ -155,8 +153,7 @@ public class Patcher {
             "public java.util.HashMap recent = new java.util.HashMap();", c));
         c.addField(CtField.make(
             "public java.util.HashMap held = new java.util.HashMap();", c));
-        for (String book : new String[]{"dealt", "taken", "deaths",
-                "hits", "first", "last"}) {
+        for (String book : new String[]{"dealt", "taken", "deaths", "first", "last"}) {
             c.addField(CtField.make(
                 "public java.util.HashMap " + book + " = new java.util.HashMap();", c));
         }
@@ -186,8 +183,6 @@ public class Patcher {
             "  java.util.HashMap b = this.book(kind);" +
             "  Object had = b.get(key);" +
             "  b.put(key, new Long((had == null ? 0L : ((Long) had).longValue()) + amount));" +
-            "  Object count = this.hits.get(key);" +
-            "  this.hits.put(key, new Long(count == null ? 1L : ((Long) count).longValue() + 1L));" +
             "  if (!this.first.containsKey(key)) { this.first.put(key, new Long(when)); }" +
             "  this.last.put(key, new Long(when));" +
             "  if (kind != 0) { return; }" +
@@ -198,12 +193,6 @@ public class Patcher {
             "  mark[1] = amount;" +
             "  log.add(mark);" +
             "  while (!log.isEmpty() && ((long[]) log.get(0))[0] < when - 30000L) { log.remove(0); }" +
-            "}", c));
-
-        c.addMethod(CtNewMethod.make(
-            "public int count(String who) {" +
-            "  Object had = this.hits.get(who);" +
-            "  return had == null ? 0 : (int) ((Long) had).longValue();" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
@@ -256,15 +245,13 @@ public class Patcher {
             "}", c));
 
         c.addField(CtField.make(
-            "public static String[] BOOKS = \"dealt,taken,deaths,hits,first,last\"" +
+            "public static String[] BOOKS = \"dealt,taken,deaths,first,last\"" +
             ".split(\",\");", c));
 
         c.addMethod(CtNewMethod.make(
             "public java.util.HashMap named(String name) {" +
             "  if (\"taken\".equals(name)) { return this.taken; }" +
-
             "  if (\"deaths\".equals(name)) { return this.deaths; }" +
-            "  if (\"hits\".equals(name)) { return this.hits; }" +
             "  if (\"first\".equals(name)) { return this.first; }" +
             "  if (\"last\".equals(name)) { return this.last; }" +
             "  return this.dealt;" +
@@ -315,7 +302,7 @@ public class Patcher {
         c.addMethod(CtNewMethod.make(
             "public void clear() {" +
             "  this.dealt.clear(); this.taken.clear(); this.deaths.clear();" +
-            "  this.hits.clear(); this.first.clear(); this.last.clear();" +
+            "  this.first.clear(); this.last.clear();" +
             "  this.recent.clear();" +
             "  this.held.clear();" +
             "}", c));
@@ -333,13 +320,6 @@ public class Patcher {
             "          new Long(was + ((Long) e.getValue()).longValue()));" +
             "    }" +
             "    kind = kind + 1;" +
-            "  }" +
-            "  java.util.Iterator kids = other.hits.entrySet().iterator();" +
-            "  while (kids.hasNext()) {" +
-            "    java.util.Map$Entry e = (java.util.Map$Entry) kids.next();" +
-            "    Object had = this.hits.get(e.getKey());" +
-            "    long was = had == null ? 0L : ((Long) had).longValue();" +
-            "    this.hits.put(e.getKey(), new Long(was + ((Long) e.getValue()).longValue()));" +
             "  }" +
             "  this.first.putAll(other.first);" +
             "  this.last.putAll(other.last);" +
@@ -449,14 +429,9 @@ public class Patcher {
         c.addField(CtField.make("public static int mode = 0;", c));
         c.addField(CtField.make("public static int segment = 0;", c));
         c.addField(CtField.make("public static int depthSeen = -1;", c));
-        c.addField(CtField.make("public static int logged = 0;", c));
-        c.addField(CtField.make("public static boolean moaned = false;", c));
-        c.addField(CtField.make("public static boolean minded = false;", c));
         c.addField(CtField.make("public static java.util.HashMap fields = new java.util.HashMap();", c));
         c.addField(CtField.make("public static java.util.HashMap slots = new java.util.HashMap();", c));
         c.addField(CtField.make("public static java.util.HashMap badges = new java.util.HashMap();", c));
-        c.addField(CtField.make("public static java.util.HashSet told = new java.util.HashSet();", c));
-        c.addField(CtField.make("public static java.util.HashSet heard = new java.util.HashSet();", c));
         c.addField(CtField.make("public static java.util.HashMap lastSeen = new java.util.HashMap();", c));
         c.addField(CtField.make("public static " + Discovery.COLOR4F + " GONE_INK ="
             + " new " + Discovery.COLOR4F + "(0.55f, 0.56f, 0.60f, 1.0f);", c));
@@ -469,14 +444,6 @@ public class Patcher {
         c.addField(CtField.make("public static long parted = 0L;", c));
         c.addField(CtField.make("public static int taken_in = 0;", c));
         c.addField(CtField.make("public static int written = 0;", c));
-
-        c.addMethod(CtNewMethod.make(
-            "public static void log(String line) {" +
-            (LOUD
-                ? "  try { java.util.logging.Logger.getLogger(\"damage-meter\").warning(line); }" +
-                  "  catch (Throwable t) { }"
-                : "") +
-            "}", c));
 
         c.addMethod(CtNewMethod.make(
             "public static Object findView(Object from, int depth) {" +
@@ -690,9 +657,6 @@ public class Patcher {
             "    String rule = verdict(victim, actor, ref, path);" +
             "    if (rule == null) { return true; }" +
             "    seenRule = rule;" +
-            "    if (told.add(\"picked \" + path)) {" +
-            "      log(\"not counting hits on \" + path + \", left out by \" + rule);" +
-            "    }" +
             "    return false;" +
             "  } catch (Throwable t) { return true; }" +
             "}", c));
@@ -716,7 +680,6 @@ public class Patcher {
             "  double[] mon = (double[]) met.get(id);" +
             "  if (mon == null) { return; }" +
             "  if (revived.add(raisedKey(((Integer) id).intValue(), (int) mon[2]))) {" +
-            "    log(\"actor \" + id + \" came out of a zombie head\");" +
             "    if (revived.size() > 512) {" +
             "      java.util.Iterator it = revived.iterator();" +
             "      it.next();" +
@@ -918,7 +881,7 @@ public class Patcher {
             "    }" +
             "    heads = still;" +
             "    totems = standing;" +
-            "  } catch (Throwable t) { log(\"could not look over the scene: \" + t); }" +
+            "  } catch (Throwable t) { }" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
@@ -981,16 +944,6 @@ public class Patcher {
             "    boolean hit = \"damage\".equals(named);" +
             "    String hurt = nameOf(victim);" +
             "    boolean onPlayer = hurt != null;" +
-            (LOUD
-                ? "    if (logged < 12) {" +
-                  "      logged = logged + 1;" +
-                  "      log(\"event name=\" + named + \" amount=\" + amount" +
-                  "          + \" raw=\" + (amount >> 20) + \" pips=\" + pips(amount)" +
-                  "          + \" victim=\" + victim" +
-                  "          + (onPlayer ? (\" [\" + hurt + \"]\") : \" [monster]\")" +
-                  "          + \" source=\" + source + \" [\" + nameOf(source) + \"]\");" +
-                  "    }"
-                : "") +
             // hits on knights pack per-type pips into the low 20 bits
             "    boolean packed = (amount >> 20) != 0;" +
             "    long real = packed ? ((long) (amount >> 20)) : ((long) amount);" +
@@ -1012,7 +965,7 @@ public class Patcher {
             "        strayed = strayed + real;" +
             "      }" +
             "    }" +
-            "  } catch (Throwable t) { log(\"could not read an event: \" + t); }" +
+            "  } catch (Throwable t) { }" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
@@ -1204,7 +1157,7 @@ public class Patcher {
             "        }" +
             "      }" +
             "    }" +
-            "  } catch (Throwable t) { log(\"no colour for \" + who + \": \" + t); }" +
+            "  } catch (Throwable t) { }" +
             "  tints.put(who, made == null ? NONE : made);" +
             "  return made;" +
             "}", c));
@@ -1214,7 +1167,6 @@ public class Patcher {
             "  try {" +
             "    Object member = memberOf(who);" +
             "    if (member == null) {" +
-            "      if (told.add(who)) { log(\"no party record for \" + who); }" +
             "      return null;" +
             "    }" +
             "    Object[] arms = ((" + Discovery.PARTY_MEMBER + ") member).weapons;" +
@@ -1225,7 +1177,6 @@ public class Patcher {
             "      i = i + 1;" +
             "    }" +
             "    if (ref == null) {" +
-            "      if (told.add(who)) { log(\"no weapon on record for \" + who); }" +
             "      return null;" +
             "    }" +
             "    Object had = badges.get(ref);" +
@@ -1234,17 +1185,13 @@ public class Patcher {
             "    " + d.glCtxClass + " gl = (" + d.glCtxClass + ") ctx;" +
             "    Object item = " + Discovery.ITEM + "." + d.itemResolveMethod + "(gl.getConfigManager(), (" + Discovery.CONFIG_REF + ") ref);" +
             "    if (item == null) {" +
-            "      log(\"nothing resolves \" + ((" + Discovery.CONFIG_REF + ") ref).getName());" +
             "    } else if (((" + Discovery.ITEM_ORIGINAL + ") item).icon == null) {" +
-            "      log(((" + Discovery.ITEM_ORIGINAL + ") item).name + \" carries no icon\");" +
             "    } else {" +
             "      made = ((" + Discovery.ITEM_ORIGINAL + ") item).icon.getImage(gl);" +
-            "      log(\"weapon icon for \" + who + \": \" + ((" + Discovery.ITEM_ORIGINAL + ") item).name" +
-            "          + (made == null ? \" (no picture)\" : \"\"));" +
             "    }" +
             "    badges.put(ref, made == null ? NONE : made);" +
             "    return made;" +
-            "  } catch (Throwable t) { log(\"weapon icon failed: \" + t); return null; }" +
+            "  } catch (Throwable t) { return null; }" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
@@ -1260,7 +1207,6 @@ public class Patcher {
         c.addField(CtField.make("public static java.util.ArrayList pending = null;", c));
         c.addField(CtField.make("public static int walked = 0;", c));
         c.addField(CtField.make("public static int shared = 0;", c));
-        c.addField(CtField.make("public static long indexBegan = 0L;", c));
         c.addField(CtField.make("public static boolean indexed = false;", c));
         c.addField(CtField.make(
             "public static String[] templates = \"" + TEMPLATES + "\".split(\",\");", c));
@@ -1302,7 +1248,6 @@ public class Patcher {
         c.addMethod(CtNewMethod.make(
             "public static void gatherItems() {" +
             "  pending = new java.util.ArrayList();" +
-            "  indexBegan = System.currentTimeMillis();" +
             "  try {" +
             "    Object cfgmgr = ((" + d.glCtxClass + ") ctx).getConfigManager();" +
             "    java.util.ArrayList groups = new java.util.ArrayList();" +
@@ -1325,7 +1270,7 @@ public class Patcher {
             "        }" +
             "      }" +
             "    }" +
-            "  } catch (Throwable t) { log(\"could not reach the item configs: \" + t); }" +
+            "  } catch (Throwable t) { }" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
@@ -1355,11 +1300,8 @@ public class Patcher {
             "    if (walked >= pending.size()) {" +
             "      indexed = true;" +
             "      pending = null;" +
-            "      log(\"indexed \" + byModel.size() + \" wearable items over \"" +
-            "          + (System.currentTimeMillis() - indexBegan) + \"ms, \" + shared" +
-            "          + \" sharing a model with another (kept the dearest)\");" +
             "    }" +
-            "  } catch (Throwable t) { log(\"indexing failed: \" + t); indexed = true; }" +
+            "  } catch (Throwable t) { indexed = true; }" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
@@ -1370,13 +1312,11 @@ public class Patcher {
             "    String key = modelKey(reference);" +
             "    Object worn = key == null ? null : byModel.get(key);" +
             "    if (worn == null) {" +
-            "      log(\"no item wears \" + key);" +
             "      return null;" +
             "    }" +
             "    Object made = iconOfItem(worn);" +
-            "    if (made != null) { log(\"helm by model: \" + ((" + Discovery.ITEM_ORIGINAL + ") worn).name); }" +
             "    return made;" +
-            "  } catch (Throwable t) { log(\"model lookup failed: \" + t); return null; }" +
+            "  } catch (Throwable t) { return null; }" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
@@ -1385,18 +1325,15 @@ public class Patcher {
             "    Object me = ((" + Discovery.CTX + ") ctx)." + d.selfMethod + "();" +
             "    if (me == null) { return null; }" +
             "    Object worn = ((" + Discovery.PLAYER_OBJECT + ") me)." + d.visibleItemMethod + "(" + Discovery.HELM_PICK + ", null);" +
-            "    if (worn == null) { log(\"our own helm slot is empty\"); return null; }" +
+            "    if (worn == null) { return null; }" +
             "    Object key = \"mine\" + worn.hashCode();" +
             "    Object had = badges.get(key);" +
             "    if (had != null) { return had == NONE ? null : had; }" +
             "    Object item = ((" + Discovery.ITEM + ") worn)." + d.itemOwnConfigMethod + "(((" + d.glCtxClass + ") ctx).getConfigManager());" +
             "    Object made = iconOfItem(item);" +
-            "    log(made == null" +
-            "        ? (\"our helm resolved to nothing usable: \" + item)" +
-            "        : (\"my helm: \" + ((" + Discovery.ITEM_ORIGINAL + ") item).name));" +
             "    badges.put(key, made == null ? NONE : made);" +
             "    return made;" +
-            "  } catch (Throwable t) { log(\"own helm failed: \" + t); return null; }" +
+            "  } catch (Throwable t) { return null; }" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
@@ -1408,12 +1345,8 @@ public class Patcher {
             "    if (called != null && who.equals(called.toString())) { return true; }" +
             "    int mine = ((" + Discovery.DOBJECT + ") me)." + d.oidMethod + "();" +
             "    int theirs = oidOf(who);" +
-            "    if (!minded) {" +
-            "      minded = true;" +
-            "      log(\"we are oid \" + mine + \"; \" + who + \" is oid \" + theirs);" +
-            "    }" +
             "    return mine != 0 && mine == theirs;" +
-            "  } catch (Throwable t) { log(\"could not tell who we are: \" + t); return false; }" +
+            "  } catch (Throwable t) { return false; }" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
@@ -1483,28 +1416,15 @@ public class Patcher {
             "}", c));
 
         c.addMethod(CtNewMethod.make(
-            "public static int myParty() {" +
-            "  try {" +
-            "    Object me = ((" + Discovery.CTX + ") ctx)." + d.selfMethod + "();" +
-            "    return me == null ? 0 : ((" + Discovery.PLAYER_OBJECT + ") me).partyOid;" +
-            "  } catch (Throwable t) { return 0; }" +
-            "}", c));
-
-        c.addMethod(CtNewMethod.make(
             "public static Object helmIcon(String who) {" +
             "  try {" +
             "    if (!(party instanceof " + Discovery.LEVEL_PARTY + ")) {" +
-            "      if (told.add(\"+kind\")) {" +
-            "        log(\"no gear for anybody here: the party is a \"" +
-            "            + (party == null ? \"none\" : party.getClass().getName()));" +
-            "      }" +
             "      return null;" +
             "    }" +
             "    Object member = memberOf(who);" +
             "    if (member == null) { return null; }" +
             "    Object kit = ((" + Discovery.LEVEL_PARTY + ") party).equipment.get(new Integer(peek(member, \"_playerOid\")));" +
             "    if (kit == null) {" +
-            "      if (told.add(who)) { log(\"no gear on record for \" + who); }" +
             "      return null;" +
             "    }" +
             "    Integer slot = new Integer(" + Discovery.HELM_SLOT + ");" +
@@ -1514,11 +1434,6 @@ public class Patcher {
             "    Object held = whole == null ? null : whole.get(slot);" +
             "    Object key = ref == null ? held : ref;" +
             "    if (key == null) {" +
-            "      if (told.add(who)) {" +
-            "        log(\"gear for \" + who + \" has nothing in slot " + Discovery.HELM_SLOT + "; references \"" +
-            "            + (worn == null ? \"none\" : String.valueOf(worn.keySet()))" +
-            "            + \", items \" + (whole == null ? \"none\" : String.valueOf(whole.keySet())));" +
-            "      }" +
             "      return null;" +
             "    }" +
             "    Object had = badges.get(key);" +
@@ -1530,11 +1445,10 @@ public class Patcher {
             "        : ((" + Discovery.ITEM + ") held)." + d.itemOwnConfigMethod + "(gl.getConfigManager());" +
             "    if (item != null && ((" + Discovery.ITEM_ORIGINAL + ") item).icon != null) {" +
             "      made = ((" + Discovery.ITEM_ORIGINAL + ") item).icon.getImage(gl);" +
-            "      log(\"helm icon for \" + who + \": \" + ((" + Discovery.ITEM_ORIGINAL + ") item).name);" +
             "    }" +
             "    badges.put(key, made == null ? NONE : made);" +
             "    return made;" +
-            "  } catch (Throwable t) { log(\"helm icon failed: \" + t); return null; }" +
+            "  } catch (Throwable t) { return null; }" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
@@ -1874,30 +1788,6 @@ public class Patcher {
             "}", c));
 
         c.addMethod(CtNewMethod.make(
-            "public static String summary() {" +
-            "  StringBuffer out = new StringBuffer();" +
-            "  int was = segment;" +
-            "  segment = 0;" +
-            "  try {" +
-            "    out.append(\"floor done, \").append(pretty(floorBook.total(0))).append(\" total:\");" +
-            "    java.util.ArrayList ids = ranked();" +
-            "    int i = 0;" +
-            "    while (i < ids.size()) {" +
-            "      String who = (String) ids.get(i);" +
-            "      i = i + 1;" +
-            "      out.append(\"  \").append(who).append(' ')" +
-            "         .append(pretty(floorBook.get(0, who)))" +
-            "         .append(\" (\").append(floorBook.count(who)).append(\" hits)\");" +
-            "    }" +
-            "  } catch (Throwable t) { }" +
-            "  segment = was;" +
-            "  if (strayed > 0L) {" +
-            "    out.append(\"  (\").append(pretty(strayed)).append(\" from nobody)\");" +
-            "  }" +
-            "  return out.toString();" +
-            "}", c));
-
-        c.addMethod(CtNewMethod.make(
             "public static String nameOfOid(int oid) {" +
             "  try {" +
             "    Object p = place();" +
@@ -1932,27 +1822,12 @@ public class Patcher {
             "}", c));
 
         c.addMethod(CtNewMethod.make(
-            "public static String healths(Object object) {" +
-            "  StringBuffer out = new StringBuffer();" +
-            "  try {" +
-            "    java.util.Iterator it = ((" + Discovery.PARTY_OBJECT + ") object).health.iterator();" +
-            "    while (it.hasNext()) {" +
-            "      " + Discovery.HEALTH + " h = (" + Discovery.HEALTH + ") it.next();" +
-            "      out.append(h.current).append('/').append(h.maximum).append(' ');" +
-            "    }" +
-            "  } catch (Throwable t) { }" +
-            "  return out.toString();" +
-            "}", c));
-
-        c.addMethod(CtNewMethod.make(
             "public static void roll() {" +
             "  if (floorBook.total(0) <= 0L && floorBook.total(1) <= 0L) { return; }" +
-            (LOUD ? "  log(summary());" : "") +
             "  lastBook.clear();" +
             "  lastBook.soak(floorBook);" +
             "  floorBook.clear();" +
             "  strayed = 0L;" +
-            "  logged = 0;" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
@@ -1962,7 +1837,6 @@ public class Patcher {
             "      ((" + Discovery.DOBJECT + ") party)." + d.removeListenerMethod +
                   "((" + d.listenerBaseIface + ") watch);" +
             "    }" +
-
             "  } catch (Throwable t) { }" +
             "  watch = null;" +
             "}", c));
@@ -1986,8 +1860,6 @@ public class Patcher {
             "  drop();" +
             "  close();" +
             "  if (party != null) {" +
-            "    log(\"left party \" + current.oid + \", holding \" + pretty(current.run.total(0))" +
-            "        + \" for it\");" +
             "    taken_in = taken_in + 1;" +
             "  }" +
             "  party = null;" +
@@ -2041,9 +1913,6 @@ public class Patcher {
             "        && level > held.deepest" +
             "        && (held.crew.isEmpty() ? lot.isEmpty() : meets(held.crew, lot));" +
             "    if (!shares && !along) { continue; }" +
-            "    log(\"party \" + held.oid + \" came back as \" + oid" +
-            "        + (shares ? \" on the same trail\" : \" further down the same run\")" +
-            "        + \", keeping its \" + pretty(held.run.total(0)));" +
             "    runs.remove(e.getKey());" +
             "    held.oid = oid;" +
             "    runs.put(new Integer(oid), held);" +
@@ -2064,11 +1933,6 @@ public class Patcher {
             "    boolean other = badge.length() > 0 && had.mark.length() > 0" +
             "        && !badge.equals(had.mark);" +
             "    if (back || other) {" +
-            "      log(\"party \" + oid + \" is on floor \" + level" +
-            "          + \" of \" + (badge.length() == 0 ? \"nowhere\" : badge)" +
-            "          + \", but the run we held under that id was \"" +
-            "          + (had.mark.length() == 0 ? \"nowhere\" : had.mark)" +
-            "          + \" down to \" + had.deepest + \" -- counting this one from nothing\");" +
             "      runs.remove(key);" +
             "      had = null;" +
             "    }" +
@@ -2079,10 +1943,6 @@ public class Patcher {
             "    runs.put(key, had);" +
             "  }" +
             "  if (current != had) {" +
-            "    log(had.isEmpty()" +
-            "        ? \"counting party \" + oid + \" from nothing\"" +
-            "        : \"picking party \" + oid + \" back up: \" + pretty(had.run.total(0))" +
-            "          + \" so far in \" + (had.mark.length() == 0 ? \"nowhere\" : had.mark));" +
             "    standing.clear();" +
             "  }" +
             "  current = had;" +
@@ -2112,12 +1972,9 @@ public class Patcher {
             "    current.crew.clear();" +
             "    current.crew.addAll(lot);" +
             "    if (stepped) {" +
-            "      log(\"down to floor \" + floor + \" (depth \" + deep + \") of \"" +
-            "          + (badge.length() == 0 ? \"nowhere\" : badge)" +
-            "          + \", party \" + current.oid + \", with \" + current.crew);" +
             "      taken_in = taken_in + 1;" +
             "    }" +
-            "  } catch (Throwable t) { log(\"could not take the run down: \" + t); }" +
+            "  } catch (Throwable t) { }" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
@@ -2244,7 +2101,6 @@ public class Patcher {
             "  this.add(this.who);" +
             "  this.add(this.much);" +
             "  this.add(this.share);" +
-
             "  this.rank.setFit(" + Discovery.LABEL + "$Fit.valueOf(\"TRUNCATE\"));" +
             "  this.who.setFit(" + Discovery.LABEL + "$Fit.valueOf(\"TRUNCATE\"));" +
             "  this.much.setFit(" + Discovery.LABEL + "$Fit.valueOf(\"TRUNCATE\"));" +
@@ -2343,7 +2199,6 @@ public class Patcher {
             "  this.homeWho = this.ink(this.who, colour, this.homeWho);" +
             "  this.homeMuch = this.ink(this.much, colour, this.homeMuch);" +
             "  this.homeShare = this.ink(this.share, colour, this.homeShare);" +
-
             "}", c));
 
         c.addMethod(CtNewMethod.make(
@@ -2378,7 +2233,6 @@ public class Patcher {
 
         c.addMethod(CtNewMethod.make(
             "public void mousePressed(" + Discovery.MOUSE_EVENT + " e) {" +
-            "  if (" + MAIN + ".heard.add(\"press\")) { " + MAIN + ".log(\"the readout heard a press\"); }" +
             "  e.consume();" +
             "  this.grabX = e.getX() - this.meter.getAbsoluteX();" +
             "  this.grabY = e.getY() - this.meter.getAbsoluteY();" +
@@ -2413,9 +2267,6 @@ public class Patcher {
 
         c.addMethod(CtNewMethod.make(
             "public void mouseClicked(" + Discovery.MOUSE_EVENT + " e) {" +
-            "  if (" + MAIN + ".heard.add(\"click\")) {" +
-            "    " + MAIN + ".log(\"the readout heard a click, button \" + e.getButton());" +
-            "  }" +
             "  e.consume();" +
             "  if (this.moved) { return; }" +
             "  if (e.getButton() == 1) { " + MAIN + ".cycleSegment(); }" +
@@ -2538,8 +2389,7 @@ public class Patcher {
             "          .append(\" down to \").append(held.deepest)" +
             "          .append(\", \").append(pretty(held.run.total(0)));" +
             "    }" +
-            "    log(\"picked up \" + runs.size() + \" run(s) from the ledger:\" + said);" +
-            "  } catch (Throwable t) { log(\"could not read the ledger: \" + t); }" +
+            "  } catch (Throwable t) { }" +
             "}", c));
     }
 
@@ -2572,7 +2422,7 @@ public class Patcher {
             "  try {" +
             "    " + d.colorizationClass + "[] plain = new " + d.colorizationClass + "[0];" +
             "    return gl.getImageCache().getImage(\"" + Discovery.WHITE_IMAGE + "\", plain);" +
-            "  } catch (Throwable t) { " + MAIN + ".log(\"no bar art: \" + t); return null; }" +
+            "  } catch (Throwable t) { return null; }" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
@@ -2732,7 +2582,7 @@ public class Patcher {
             "      this.resize();" +
             "    }" +
             "    this.invalidate();" +
-            "  } catch (Throwable t) { " + MAIN + ".log(\"readout failed: \" + t); }" +
+            "  } catch (Throwable t) { }" +
             "}", c));
     }
 
@@ -2785,7 +2635,6 @@ public class Patcher {
             "    root.addWindow(made);" +
             "    made.resize();" +
             "  } catch (Throwable t) {" +
-            "    if (!moaned) { moaned = true; log(\"could not open the readout: \" + t); }" +
             "  }" +
             "}", c));
 
@@ -2804,7 +2653,6 @@ public class Patcher {
             "    }" +
             "    parted = 0L;" +
             "    if (now != party && System.currentTimeMillis() - stirred > " + QUIET + ") {" +
-            "      if (meter != null) { log(\"putting the readout away, the party is done\"); }" +
             "      close();" +
             "      return;" +
             "    }" +
@@ -2825,7 +2673,6 @@ public class Patcher {
             "    Object made = new " + WATCH + "();" +
             "    root.addTickParticipant((" + d.tickableIface + ") made);" +
             "    pacer = made;" +
-            "    log(\"awake; reading the gear tables in the background\");" +
             "  } catch (Throwable t) { }" +
             "}", c));
 
@@ -2851,26 +2698,14 @@ public class Patcher {
             "    strayed = 0L;" +
             "    away = 0.0f;" +
             "    depthSeen = -1;" +
-            "    logged = 0;" +
-            "    moaned = false;" +
             "    segment = 0;" +
             "    Object made = pacer != null ? pacer : new " + WATCH + "();" +
             "    ((" + Discovery.DOBJECT + ") object)." + d.addListenerMethod +
                   "((" + d.listenerBaseIface + ") made, true);" +
             "    watch = made;" +
-            "    log(\"watching party \" + ((" + Discovery.DOBJECT + ") object)." + d.oidMethod + "()" +
-            "        + \" (we are told \" + myParty() + \")\"" +
-            "        + \" on floor \" + floorOf(object)" +
-            "        + \" (depth \" + ((" + Discovery.PARTY_OBJECT + ") object).depth + \") of \"" +
-            "        + (markOf(object).length() == 0 ? \"nowhere\" : markOf(object))" +
-            "        + \", health \" + healths(object)" +
-            "        + \", party is a \" + object.getClass().getName()" +
-            "        + \", gear for \" + (object instanceof " + Discovery.LEVEL_PARTY + "" +
-            "            ? String.valueOf(((" + Discovery.LEVEL_PARTY + ") object).equipment.keySet())" +
-            "            : \"(no equipment on this kind)\"));" +
             "    store();" +
             "    open();" +
-            "  } catch (Throwable t) { log(\"attach failed: \" + t); }" +
+            "  } catch (Throwable t) { }" +
             "}", c));
     }
 
@@ -2901,6 +2736,6 @@ public class Patcher {
             "try { " + MAIN + ".wake(this." + d.dirCtxField + "); } catch (Throwable t) { }"
                 + "if ($1 instanceof " + Discovery.PARTY_OBJECT + ") {"
                 + " try { " + MAIN + ".attach(this." + d.dirCtxField + ", $1, this); }"
-                + " catch (Throwable t) { " + MAIN + ".log(\"attach threw: \" + t); } }");
+                + " catch (Throwable t) { } }");
     }
 }
