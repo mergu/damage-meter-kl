@@ -31,6 +31,8 @@ public class Patcher {
     static final int PAD = 6;
     static final int SEATS = 8;
     static final int DEBUG_SLOTS = 40;
+    static final int KNOWN_CAP = 1000;
+    static final String LEDGER_DIR = ".sk-damage-meter";
     static final int DEBUG_PAGES = 5;
     static final int DEBUG_VALUE = 160;
     static final int DEBUG_CHARS = 44;
@@ -140,9 +142,11 @@ public class Patcher {
 
         CtClass dirCt = pool.get(d.dirBaseClass);
         hookDirector(d, dirCt);
+        CtClass spriteCt = pool.get(d.spriteClass);
+        hookSprite(spriteCt);
 
         CtClass[] toWrite = {tallyCt, runCt, barCt, mainCt, rowCt, mouseCt, meterCt, watchCt,
-            dirCt};
+            dirCt, spriteCt};
         for (CtClass c : toWrite) {
             c.writeFile(OUT_DIR);
         }
@@ -398,13 +402,19 @@ public class Patcher {
         c.addField(CtField.make("public static Object seenActor = null;", c));
         c.addField(CtField.make("public static String seenRule = null;", c));
         c.addField(CtField.make("public static java.util.HashMap lastHits = new java.util.HashMap();", c));
-        c.addField(CtField.make("public static java.util.HashMap heads = new java.util.HashMap();", c));
-        c.addField(CtField.make("public static java.util.ArrayList totems = new java.util.ArrayList();", c));
         c.addField(CtField.make("public static java.util.ArrayList goneHeads = new java.util.ArrayList();", c));
-        c.addField(CtField.make("public static java.util.HashMap met = new java.util.HashMap();", c));
-        c.addField(CtField.make("public static java.util.ArrayList zombies = new java.util.ArrayList();", c));
-        // keyed by id and server creation time so the marks survive a trip to the ready room
-        // without landing on another floor's monster that reuses the id
+        c.addField(CtField.make("public static java.lang.ref.WeakReference headsIn = null;", c));
+        c.addField(CtField.make("public static java.util.HashSet scanned = new java.util.HashSet();", c));
+        c.addField(CtField.make("public static boolean memoDirty = false;", c));
+        c.addField(CtField.make("public static java.lang.ref.WeakReference scannedIn = null;", c));
+        c.addField(CtField.make("public static java.lang.reflect.Field fCreated = null;", c));
+        c.addField(CtField.make("public static java.lang.reflect.Field fModel = null;", c));
+        c.addField(CtField.make("public static java.lang.reflect.Field fView = null;", c));
+        c.addField(CtField.make("public static java.lang.reflect.Field fSprites = null;", c));
+        c.addField(CtField.make("public static java.lang.reflect.Field fAmount = null;", c));
+        c.addField(CtField.make("public static java.lang.reflect.Field fVictim = null;", c));
+        c.addField(CtField.make("public static java.lang.reflect.Field fSource = null;", c));
+        // id@created, so marks survive the ready room but not an id reused on another floor
         c.addField(CtField.make("public static java.util.LinkedHashSet revived = new java.util.LinkedHashSet();", c));
         c.addField(CtField.make("public static java.lang.ref.WeakReference swept = null;", c));
         c.addField(CtField.make("public static java.util.HashMap painted = new java.util.HashMap();", c));
@@ -534,6 +544,7 @@ public class Patcher {
 
         c.addMethod(CtNewMethod.make(
             "public static String leaves(Object ref, String path) {" +
+            "  if (ref == null) { return lootOf(path); }" +
             "  Object args = ((" + Discovery.CONFIG_REF + ") ref)." + d.refArgsMethod + "();" +
             "  Object said = args == null ? null" +
             "      : ((java.util.Map) args).get(\"" + Discovery.LOOT_ARG + "\");" +
@@ -557,19 +568,53 @@ public class Patcher {
 
         c.addMethod(CtNewMethod.make(
             "public static java.lang.reflect.Field grab(Class owner, String name) {" +
-            "  String key = owner.getName() + \"#\" + name;" +
-            "  Object had = fields.get(key);" +
-            "  if (had != null) { return (java.lang.reflect.Field) had; }" +
+            "  java.util.HashMap known = (java.util.HashMap) fields.get(owner);" +
+            "  if (known == null) { known = new java.util.HashMap(); fields.put(owner, known); }" +
+            "  Object had = known.get(name);" +
+            "  if (had != null) { return had == NONE ? null : (java.lang.reflect.Field) had; }" +
             "  Class at = owner;" +
             "  while (at != null) {" +
             "    try {" +
             "      java.lang.reflect.Field f = at.getDeclaredField(name);" +
             "      f.setAccessible(true);" +
-            "      fields.put(key, f);" +
+            "      known.put(name, f);" +
             "      return f;" +
             "    } catch (Throwable t) { at = at.getSuperclass(); }" +
             "  }" +
+            "  known.put(name, NONE);" +
             "  return null;" +
+            "}", c));
+
+        c.addMethod(CtNewMethod.make(
+            "public static int made(Object actor) {" +
+            "  try {" +
+            "    if (fCreated == null) { fCreated = grab(actor.getClass(), \"_created\"); }" +
+            "    return fCreated.getInt(actor);" +
+            "  } catch (Throwable t) { return 0; }" +
+            "}", c));
+
+        c.addMethod(CtNewMethod.make(
+            "public static java.util.Map spritesOf(Object view) {" +
+            "  try {" +
+            "    if (fSprites == null) { fSprites = grab(view.getClass(), \"" + d.spriteMapField + "\"); }" +
+            "    return (java.util.Map) fSprites.get(view);" +
+            "  } catch (Throwable t) { return null; }" +
+            "}", c));
+
+        c.addMethod(CtNewMethod.make(
+            "public static Object viewOf(Object sprite) {" +
+            "  try {" +
+            "    if (fView == null) { fView = grab(sprite.getClass(), \"_view\"); }" +
+            "    return fView.get(sprite);" +
+            "  } catch (Throwable t) { return null; }" +
+            "}", c));
+
+        c.addMethod(CtNewMethod.make(
+            "public static Object modelOf(Object sprite) {" +
+            "  try {" +
+            "    if (fModel == null) { fModel = grab(sprite.getClass(), \"_model\"); }" +
+            "    return fModel.get(sprite);" +
+            "  } catch (Throwable t) { return null; }" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
@@ -589,15 +634,22 @@ public class Patcher {
             "}", c));
 
         c.addMethod(CtNewMethod.make(
+            "public static String memoKey(Object view, int id) {" +
+            "  Object model = ((" + d.sceneViewClass + ") view)." + d.sceneModelMethod + "();" +
+            "  int scene = model == null ? 0 : ((" + Discovery.WHIRLED_MODEL + ") model).sceneId;" +
+            "  return scene + \":\" + id;" +
+            "}", c));
+
+        c.addMethod(CtNewMethod.make(
             "public static String raisedKey(int id, int made) { return id + \"@\" + made; }", c));
 
         c.addMethod(CtNewMethod.make(
             "public static boolean raised(int id, Object actor) {" +
-            "  return actor != null && revived.contains(raisedKey(id, peek(actor, \"_created\")));" +
+            "  return actor != null && revived.contains(raisedKey(id, made(actor)));" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
-            "public static String verdict(int victim, Object actor, Object ref, String path) {" +
+            "public static String verdict(int victim, Object actor, Object ref, String path, Object view) {" +
             "  String kind = null;" +
             "  String mission = null;" +
             "  int r = 0;" +
@@ -619,7 +671,8 @@ public class Patcher {
             "    }" +
             "    boolean hit;" +
             "    if (what.equals(\"@Revived\")) {" +
-            "      hit = raised(victim, actor);" +
+            "      hit = raised(victim, actor)" +
+            "          || view != null && current.recallRaised(memoKey(view, victim));" +
             "    } else if (what.charAt(0) == '@') {" +
             "      if (kind == null) { kind = leaves(ref, path); }" +
             "      hit = kind.equals(what.substring(1));" +
@@ -644,7 +697,15 @@ public class Patcher {
             "    if (view == null) { return true; }" +
             "    Object sprite = ((" + d.sceneViewClass + ") view)." + d.spriteByIdMethod +
                   "(victim);" +
-            "    if (sprite == null) { return true; }" +
+            "    if (sprite == null) {" +
+            "      String known = current.recall(memoKey(view, victim));" +
+            "      if (known == null) { return true; }" +
+            "      seenPath = known;" +
+            "      String left = verdict(victim, null, null, known, view);" +
+            "      if (left == null) { return true; }" +
+            "      seenRule = left;" +
+            "      return false;" +
+            "    }" +
             "    Object actor = ((" + d.spriteClass + ") sprite)." + d.spriteActorMethod + "();" +
             "    if (actor == null) { return true; }" +
             "    Object ref = ((" + Discovery.ACTOR + ") actor)." + d.actorRefMethod + "();" +
@@ -654,7 +715,7 @@ public class Patcher {
             "    seenPath = path;" +
             "    seenRef = ref;" +
             "    seenActor = actor;" +
-            "    String rule = verdict(victim, actor, ref, path);" +
+            "    String rule = verdict(victim, actor, ref, path, view);" +
             "    if (rule == null) { return true; }" +
             "    seenRule = rule;" +
             "    return false;" +
@@ -662,92 +723,130 @@ public class Patcher {
             "}", c));
 
         c.addMethod(CtNewMethod.make(
-            "public static double fit(double[] mon, double[] head) {" +
-            "  if (mon[3] == 0.0 || head[3] != 0.0) { return -1.0; }" +
-            "  double after = mon[2] - head[2];" +
-            "  if (after < -" + REVIVE_BEFORE + " || after > 0.0) { return -1.0; }" +
-            "  if (mon[2] < head[2] - head[4]) { return -1.0; }" +
-            "  double gap = Math.abs(after);" +
-            "  double dx = mon[0] - head[0];" +
-            "  double dy = mon[1] - head[1];" +
-            "  return gap + Math.min(Math.sqrt(dx * dx + dy * dy), 999.0) / 1000.0;" +
+            "public static void markRevived(Object view, int id, int made, String path) {" +
+            "  current.remember(memoKey(view, id), path, true);" +
+            "  memoDirty = true;" +
+            "  if (revived.add(raisedKey(id, made)) && revived.size() > 512) {" +
+            "    java.util.Iterator it = revived.iterator();" +
+            "    it.next();" +
+            "    it.remove();" +
+            "  }" +
             "}", c));
 
+        // the zombie a totem raises shows up just before its head's removal does
         c.addMethod(CtNewMethod.make(
-            "public static void markRevived(Object id, double[] head) {" +
-            "  head[3] = 1.0;" +
-            "  head[5] = (double) ((Integer) id).intValue();" +
-            "  double[] mon = (double[]) met.get(id);" +
-            "  if (mon == null) { return; }" +
-            "  if (revived.add(raisedKey(((Integer) id).intValue(), (int) mon[2]))) {" +
-            "    if (revived.size() > 512) {" +
-            "      java.util.Iterator it = revived.iterator();" +
-            "      it.next();" +
-            "      it.remove();" +
+            "public static void headGone(Object sprite, int gone) {" +
+            "  if (!wantRevived && !debug) { return; }" +
+            "  try {" +
+            "    Object actor = ((" + d.spriteClass + ") sprite)." + d.spriteActorMethod + "();" +
+            "    if (actor == null) { return; }" +
+            "    Object ref = ((" + Discovery.ACTOR + ") actor)." + d.actorRefMethod + "();" +
+            "    if (ref == null || !\"" + Discovery.ZOMBIE_HEAD + "\".equals(((" + Discovery.CONFIG_REF + ") ref).getName())) { return; }" +
+            "    Object view = viewOf(sprite);" +
+            "    java.util.Map sprites = view == null ? null : spritesOf(view);" +
+            "    if (sprites == null) { return; }" +
+            "    if (headsIn == null || headsIn.get() != view) {" +
+            "      headsIn = new java.lang.ref.WeakReference(view);" +
+            "      goneHeads.clear();" +
             "    }" +
-            "  }" +
+            "    " + Discovery.VECTOR2F + " spot = ((" + Discovery.ACTOR + ") actor)." + d.actorWhereMethod + "();" +
+            "    if (spot == null) { return; }" +
+            "    int lasted = gone - made(actor);" +
+            "    double near = 99999.0;" +
+            "    int best = 0;" +
+            "    int bestMade = 0;" +
+            "    String bestName = null;" +
+            "    double bestFit = -1.0;" +
+            "    java.util.Iterator it = sprites.entrySet().iterator();" +
+            "    while (it.hasNext()) {" +
+            "      java.util.Map$Entry e = (java.util.Map$Entry) it.next();" +
+            "      Object other = e.getValue() == null ? null" +
+            "          : ((" + d.spriteClass + ") e.getValue())." + d.spriteActorMethod + "();" +
+            "      if (other == null || other == actor) { continue; }" +
+            "      Object oref = ((" + Discovery.ACTOR + ") other)." + d.actorRefMethod + "();" +
+            "      String name = oref == null ? null : ((" + Discovery.CONFIG_REF + ") oref).getName();" +
+            "      if (name == null) { continue; }" +
+            "      " + Discovery.VECTOR2F + " at = ((" + Discovery.ACTOR + ") other)." + d.actorWhereMethod + "();" +
+            "      if (at == null) { continue; }" +
+            "      double dx = (double) (at.x - spot.x);" +
+            "      double dy = (double) (at.y - spot.y);" +
+            "      double dist = Math.sqrt(dx * dx + dy * dy);" +
+            "      if (\"" + GRIM_TOTEM + "\".equals(name)) {" +
+            "        if (dist < near) { near = dist; }" +
+            "        continue;" +
+            "      }" +
+            "      if (!(other instanceof " + Discovery.MONSTER + ") || name.indexOf(\"" + ZOMBIE_FAMILY + "\") < 0) { continue; }" +
+            "      int m = made(other);" +
+            "      int after = m - gone;" +
+            "      if (after < -" + REVIVE_BEFORE + " || after > 0 || m < gone - lasted) { continue; }" +
+            "      int id = ((Integer) e.getKey()).intValue();" +
+            "      if (revived.contains(raisedKey(id, m))) { continue; }" +
+            "      double fit = Math.abs(after) + Math.min(dist, 999.0) / 1000.0;" +
+            "      if (bestFit < 0.0 || fit < bestFit) { best = id; bestMade = m; bestFit = fit; bestName = name; }" +
+            "    }" +
+            "    double[] head = new double[] { (double) spot.x, (double) spot.y, (double) gone," +
+            "        near <= " + TOTEM_REACH + " ? 0.0 : 2.0, (double) lasted, 0.0, near };" +
+            "    if (head[3] == 0.0 && bestFit >= 0.0) {" +
+            "      markRevived(view, best, bestMade, bestName);" +
+            "      head[3] = 1.0;" +
+            "      head[5] = (double) best;" +
+            "    }" +
+            "    goneHeads.add(head);" +
+            "    if (goneHeads.size() > 64) { goneHeads.remove(0); }" +
+            "  } catch (Throwable t) { }" +
+            "}", c));
+
+        // hits arrive for actors out of range too, so remember what the rules left out
+        c.addMethod(CtNewMethod.make(
+            "public static void learn() {" +
+            "  if (rules.length == 0) { return; }" +
+            "  try {" +
+            "    Object view = seen();" +
+            "    java.util.Map sprites = view == null ? null : spritesOf(view);" +
+            "    if (sprites == null) { return; }" +
+            "    if (scannedIn == null || scannedIn.get() != view) {" +
+            "      scannedIn = new java.lang.ref.WeakReference(view);" +
+            "      scanned.clear();" +
+            "    }" +
+            "    java.util.HashSet now = new java.util.HashSet();" +
+            "    java.util.Iterator it = sprites.entrySet().iterator();" +
+            "    while (it.hasNext()) {" +
+            "      java.util.Map$Entry e = (java.util.Map$Entry) it.next();" +
+            "      now.add(e.getKey());" +
+            "      if (scanned.contains(e.getKey())) { continue; }" +
+            "      Object actor = e.getValue() == null ? null" +
+            "          : ((" + d.spriteClass + ") e.getValue())." + d.spriteActorMethod + "();" +
+            "      if (actor == null) { continue; }" +
+            "      Object ref = ((" + Discovery.ACTOR + ") actor)." + d.actorRefMethod + "();" +
+            "      String path = ref == null ? null : ((" + Discovery.CONFIG_REF + ") ref).getName();" +
+            "      if (path == null || path.indexOf('|') >= 0) { continue; }" +
+            "      int id = ((Integer) e.getKey()).intValue();" +
+            "      if (verdict(id, actor, ref, path, view) != null) {" +
+            "        current.remember(memoKey(view, id), path, false);" +
+            "        memoDirty = true;" +
+            "      }" +
+            "    }" +
+            "    scanned = now;" +
+            "  } catch (Throwable t) { }" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
-            "public static boolean metRaised(Object id) {" +
-            "  double[] mon = (double[]) met.get(id);" +
-            "  return mon != null && revived.contains(raisedKey(((Integer) id).intValue(), (int) mon[2]));" +
-            "}", c));
-
-        c.addMethod(CtNewMethod.make(
-            "public static int raisedHere() {" +
-            "  int n = 0;" +
-            "  java.util.Iterator it = met.keySet().iterator();" +
-            "  while (it.hasNext()) { if (metRaised(it.next())) { n = n + 1; } }" +
-            "  return n;" +
-            "}", c));
-
-        c.addMethod(CtNewMethod.make(
-            "public static void claimFor(double[] head) {" +
-            "  Object best = null;" +
-            "  double bestFit = 0.0;" +
-            "  java.util.Iterator it = met.entrySet().iterator();" +
-            "  while (it.hasNext()) {" +
-            "    java.util.Map$Entry m = (java.util.Map$Entry) it.next();" +
-            "    if (metRaised(m.getKey())) { continue; }" +
-            "    double f = fit((double[]) m.getValue(), head);" +
-            "    if (f >= 0.0 && (best == null || f < bestFit)) { best = m.getKey(); bestFit = f; }" +
-            "  }" +
-            "  if (best != null) { markRevived(best, head); }" +
-            "}", c));
-
-        c.addMethod(CtNewMethod.make(
-            "public static void claimBy(Object id, double[] mon) {" +
+            "public static String headGap(Object actor, String path) {" +
+            "  if (actor == null || path == null) { return \"not met\"; }" +
+            "  " + Discovery.VECTOR2F + " at = ((" + Discovery.ACTOR + ") actor)." + d.actorWhereMethod + "();" +
+            "  int m = made(actor);" +
             "  double[] best = null;" +
-            "  double bestFit = 0.0;" +
             "  int h = 0;" +
             "  while (h < goneHeads.size()) {" +
             "    double[] head = (double[]) goneHeads.get(h);" +
-            "    double f = fit(mon, head);" +
-            "    if (f >= 0.0 && (best == null || f < bestFit)) { best = head; bestFit = f; }" +
+            "    if (best == null || Math.abs(m - head[2]) < Math.abs(m - best[2])) { best = head; }" +
             "    h = h + 1;" +
             "  }" +
-            "  if (best != null) { markRevived(id, best); }" +
-            "}", c));
-
-        c.addMethod(CtNewMethod.make(
-            "public static String headGap(int victim) {" +
-            "  double[] mon = (double[]) met.get(new Integer(victim));" +
-            "  if (mon == null) { return \"not met\"; }" +
-            "  double[] best = null;" +
-            "  int h = 0;" +
-            "  while (h < goneHeads.size()) {" +
-            "    double[] head = (double[]) goneHeads.get(h);" +
-            "    if (best == null || Math.abs(mon[2] - head[2]) < Math.abs(mon[2] - best[2])) {" +
-            "      best = head;" +
-            "    }" +
-            "    h = h + 1;" +
-            "  }" +
-            "  String kind = mon[3] != 0.0 ? \"zombie\" : \"not a zombie\";" +
-            "  if (best == null) { return kind + \", no head gone on this floor\"; }" +
-            "  double dx = mon[0] - best[0];" +
-            "  double dy = mon[1] - best[1];" +
-            "  return kind + \", made \" + ((int) (mon[2] - best[2])) + \"ms after the nearest head went, \"" +
+            "  String kind = path.indexOf(\"" + ZOMBIE_FAMILY + "\") >= 0 ? \"zombie\" : \"not a zombie\";" +
+            "  if (best == null || at == null) { return kind + \", no head gone on this floor\"; }" +
+            "  double dx = ((double) at.x) - best[0];" +
+            "  double dy = ((double) at.y) - best[1];" +
+            "  return kind + \", made \" + ((int) (m - best[2])) + \"ms after the nearest head went, \"" +
             "      + (Math.round(Math.sqrt(dx * dx + dy * dy) * 10.0) / 10.0) + \" away; that head lasted \"" +
             "      + ((int) best[4]) + \"ms\" + (best[3] == 2.0 ? \", no totem near\" : \"\");" +
             "}", c));
@@ -756,9 +855,7 @@ public class Patcher {
         c.addMethod(CtNewMethod.make(
             "public static void paint(Object id, Object sprite) {" +
             "  try {" +
-            "    java.lang.reflect.Field f = grab(sprite.getClass(), \"_model\");" +
-            "    if (f == null) { return; }" +
-            "    Object model = f.get(sprite);" +
+            "    Object model = modelOf(sprite);" +
             "    if (model == null) { return; }" +
             "    " + d.colorStateClass + " state = ((" + d.modelClass + ") model).getColorState();" +
             "    if (sharedWhite == null) {" +
@@ -788,40 +885,20 @@ public class Patcher {
             "}", c));
 
         c.addMethod(CtNewMethod.make(
-            "public static double nearest(java.util.ArrayList spots, double x, double y) {" +
-            "  double best = 99999.0;" +
-            "  int i = 0;" +
-            "  while (i < spots.size()) {" +
-            "    double[] at = (double[]) spots.get(i);" +
-            "    double d = Math.sqrt((at[0] - x) * (at[0] - x) + (at[1] - y) * (at[1] - y));" +
-            "    if (d < best) { best = d; }" +
-            "    i = i + 1;" +
-            "  }" +
-            "  return best;" +
-            "}", c));
-
-        c.addMethod(CtNewMethod.make(
             "public static void sweep() {" +
-            "  if (!debug && !painted.isEmpty()) { unpaint(); }" +
-            "  if (!wantRevived && !debug) { return; }" +
+            "  if (!debug) {" +
+            "    if (!painted.isEmpty()) { unpaint(); }" +
+            "    return;" +
+            "  }" +
             "  try {" +
             "    Object view = seen();" +
-            "    if (view == null) { heads.clear(); return; }" +
+            "    if (view == null) { return; }" +
             "    if (swept == null || swept.get() != view) {" +
             "      swept = new java.lang.ref.WeakReference(view);" +
-            "      heads.clear();" +
-            "      totems.clear();" +
-            "      goneHeads.clear();" +
-            "      met.clear();" +
-            "      zombies.clear();" +
             "      painted.clear();" +
             "    }" +
-            "    java.lang.reflect.Field f = grab(view.getClass(), \"" + d.spriteMapField + "\");" +
-            "    if (f == null) { return; }" +
-            "    java.util.Map sprites = (java.util.Map) f.get(view);" +
+            "    java.util.Map sprites = spritesOf(view);" +
             "    if (sprites == null) { return; }" +
-            "    java.util.HashMap still = new java.util.HashMap();" +
-            "    java.util.ArrayList standing = new java.util.ArrayList();" +
             "    java.util.Iterator it = sprites.entrySet().iterator();" +
             "    while (it.hasNext()) {" +
             "      java.util.Map$Entry e = (java.util.Map$Entry) it.next();" +
@@ -829,58 +906,13 @@ public class Patcher {
             "      if (sprite == null) { continue; }" +
             "      Object actor = ((" + d.spriteClass + ") sprite)." + d.spriteActorMethod + "();" +
             "      if (actor == null) { continue; }" +
-            "      " + Discovery.ACTOR + " one = (" + Discovery.ACTOR + ") actor;" +
-            "      boolean monster = actor instanceof " + Discovery.MONSTER + ";" +
-            "      Object ref = one." + d.actorRefMethod + "();" +
-            "      String name = ref == null ? \"\" : ((" + Discovery.CONFIG_REF + ") ref).getName();" +
-            "      if (name == null) { name = \"\"; }" +
+            "      Object ref = ((" + Discovery.ACTOR + ") actor)." + d.actorRefMethod + "();" +
+            "      String name = ref == null ? null : ((" + Discovery.CONFIG_REF + ") ref).getName();" +
             "      int id = ((Integer) e.getKey()).intValue();" +
-            "      if (debug && (raised(id, actor) || ref != null" +
-            "          && verdict(id, actor, ref, name) != null)) {" +
+            "      if (raised(id, actor) || name != null && verdict(id, actor, ref, name, view) != null) {" +
             "        paint(e.getKey(), sprite);" +
             "      }" +
-            "      if (monster && met.containsKey(e.getKey())) { continue; }" +
-            "      " + Discovery.VECTOR2F + " at = one." + d.actorWhereMethod + "();" +
-            "      if (at == null) { continue; }" +
-            "      if (monster) {" +
-            "        double[] mon = new double[] { (double) at.x, (double) at.y," +
-            "            (double) peek(one, \"_created\")," +
-            "            name.indexOf(\"" + ZOMBIE_FAMILY + "\") >= 0 ? 1.0 : 0.0 };" +
-            "        met.put(e.getKey(), mon);" +
-            "        if (mon[3] != 0.0) {" +
-            "          zombies.add(e.getKey());" +
-            "          if (zombies.size() > 64) { zombies.remove(0); }" +
-            "        }" +
-            "        claimBy(e.getKey(), mon);" +
-            "        continue;" +
-            "      }" +
-            "      if (\"" + GRIM_TOTEM + "\".equals(name)) {" +
-            "        standing.add(new double[] { (double) at.x, (double) at.y });" +
-            "        continue;" +
-            "      }" +
-            "      if (!\"" + Discovery.ZOMBIE_HEAD + "\".equals(name)) { continue; }" +
-            "      still.put(e.getKey(), new Object[] { sprite, new double[] {" +
-            "          (double) at.x, (double) at.y, (double) peek(one, \"_created\") } });" +
             "    }" +
-            // the view drops a removed sprite from its map but leaves the removal time on it
-            "    java.util.Iterator was = heads.entrySet().iterator();" +
-            "    while (was.hasNext()) {" +
-            "      java.util.Map$Entry e = (java.util.Map$Entry) was.next();" +
-            "      if (still.containsKey(e.getKey())) { continue; }" +
-            "      Object[] held = (Object[]) e.getValue();" +
-            "      double[] spot = (double[]) held[1];" +
-            "      int gone = peek(held[0], \"" + d.spriteGoneField + "\");" +
-            "      int lasted = gone - ((int) spot[2]);" +
-            "      double near = Math.min(nearest(totems, spot[0], spot[1])," +
-            "          nearest(standing, spot[0], spot[1]));" +
-            "      double[] head = new double[] { spot[0], spot[1], (double) gone," +
-            "          near <= " + TOTEM_REACH + " ? 0.0 : 2.0, (double) lasted, 0.0, near };" +
-            "      goneHeads.add(head);" +
-            "      if (goneHeads.size() > 64) { goneHeads.remove(0); }" +
-            "      claimFor(head);" +
-            "    }" +
-            "    heads = still;" +
-            "    totems = standing;" +
             "  } catch (Throwable t) { }" +
             "}", c));
 
@@ -930,16 +962,21 @@ public class Patcher {
             "    lastHits.put(by, new Object[] { seenPath, leaves(seenRef, seenPath), seenRule," +
             "        new Long(amount), new Integer(victim)," +
             "        Boolean.valueOf(raised(victim, seenActor))," +
-            "        headGap(victim), seenActor });" +
+            "        headGap(seenActor, seenPath), seenActor });" +
             "  } catch (Throwable t) { }" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
             "public static void record(" + Discovery.DAMAGE_EVENT + " e) {" +
             "  try {" +
-            "    int amount = peek(e, \"_amount\");" +
-            "    int victim = peek(e, \"_actorId\");" +
-            "    int source = peek(e, \"_sourceId\");" +
+            "    if (fAmount == null) {" +
+            "      fAmount = grab(e.getClass(), \"_amount\");" +
+            "      fVictim = grab(e.getClass(), \"_actorId\");" +
+            "      fSource = grab(e.getClass(), \"_sourceId\");" +
+            "    }" +
+            "    int amount = fAmount.getInt(e);" +
+            "    int victim = fVictim.getInt(e);" +
+            "    int source = fSource.getInt(e);" +
             "    String named = e.getName();" +
             "    boolean hit = \"damage\".equals(named);" +
             "    String hurt = nameOf(victim);" +
@@ -1679,29 +1716,74 @@ public class Patcher {
             "  }" +
             "}", c));
 
+        // {made, id, x, y, raised}, oldest first
         c.addMethod(CtNewMethod.make(
-            "public static String zombieGap(double[] head) {" +
-            "  Object best = null;" +
-            "  double gap = 0.0;" +
-            "  java.util.Iterator it = met.entrySet().iterator();" +
+            "public static java.util.ArrayList zombiesHere() {" +
+            "  java.util.ArrayList out = new java.util.ArrayList();" +
+            "  Object view = seen();" +
+            "  java.util.Map sprites = view == null ? null : spritesOf(view);" +
+            "  if (sprites == null) { return out; }" +
+            "  java.util.Iterator it = sprites.entrySet().iterator();" +
             "  while (it.hasNext()) {" +
-            "    java.util.Map$Entry m = (java.util.Map$Entry) it.next();" +
-            "    double[] mon = (double[]) m.getValue();" +
-            "    if (mon[3] == 0.0) { continue; }" +
-            "    double g = mon[2] - head[2];" +
-            "    if (best == null || Math.abs(g) < Math.abs(gap)) { best = m.getKey(); gap = g; }" +
+            "    java.util.Map$Entry e = (java.util.Map$Entry) it.next();" +
+            "    Object actor = e.getValue() == null ? null" +
+            "        : ((" + d.spriteClass + ") e.getValue())." + d.spriteActorMethod + "();" +
+            "    if (!(actor instanceof " + Discovery.MONSTER + ")) { continue; }" +
+            "    Object ref = ((" + Discovery.ACTOR + ") actor)." + d.actorRefMethod + "();" +
+            "    String name = ref == null ? null : ((" + Discovery.CONFIG_REF + ") ref).getName();" +
+            "    if (name == null || name.indexOf(\"" + ZOMBIE_FAMILY + "\") < 0) { continue; }" +
+            "    " + Discovery.VECTOR2F + " at = ((" + Discovery.ACTOR + ") actor)." + d.actorWhereMethod + "();" +
+            "    int id = ((Integer) e.getKey()).intValue();" +
+            "    double[] one = new double[] { (double) made(actor), (double) id," +
+            "        at == null ? 0.0 : (double) at.x, at == null ? 0.0 : (double) at.y," +
+            "        raised(id, actor) ? 1.0 : 0.0 };" +
+            "    int i = out.size();" +
+            "    while (i > 0 && ((double[]) out.get(i - 1))[0] > one[0]) { i = i - 1; }" +
+            "    out.add(i, one);" +
+            "  }" +
+            "  return out;" +
+            "}", c));
+
+        c.addMethod(CtNewMethod.make(
+            "public static int[] roomCounts() {" +
+            "  int[] n = new int[3];" +
+            "  java.util.ArrayList zs = zombiesHere();" +
+            "  n[1] = zs.size();" +
+            "  int i = 0;" +
+            "  while (i < zs.size()) { if (((double[]) zs.get(i))[4] != 0.0) { n[2] = n[2] + 1; } i = i + 1; }" +
+            "  Object view = seen();" +
+            "  java.util.Map sprites = view == null ? null : spritesOf(view);" +
+            "  if (sprites == null) { return n; }" +
+            "  java.util.Iterator it = sprites.values().iterator();" +
+            "  while (it.hasNext()) {" +
+            "    Object sprite = it.next();" +
+            "    Object actor = sprite == null ? null : ((" + d.spriteClass + ") sprite)." + d.spriteActorMethod + "();" +
+            "    Object ref = actor == null ? null : ((" + Discovery.ACTOR + ") actor)." + d.actorRefMethod + "();" +
+            "    if (ref != null && \"" + Discovery.ZOMBIE_HEAD + "\".equals(((" + Discovery.CONFIG_REF + ") ref).getName())) { n[0] = n[0] + 1; }" +
+            "  }" +
+            "  return n;" +
+            "}", c));
+
+        c.addMethod(CtNewMethod.make(
+            "public static String zombieGap(double[] head, java.util.ArrayList zs) {" +
+            "  double[] best = null;" +
+            "  int i = 0;" +
+            "  while (i < zs.size()) {" +
+            "    double[] z = (double[]) zs.get(i);" +
+            "    if (best == null || Math.abs(z[0] - head[2]) < Math.abs(best[0] - head[2])) { best = z; }" +
+            "    i = i + 1;" +
             "  }" +
             "  if (best == null) { return \"never\"; }" +
-            "  double[] mon = (double[]) met.get(best);" +
-            "  double dx = mon[0] - head[0];" +
-            "  double dy = mon[1] - head[1];" +
-            "  return ((int) gap) + \"ms after (#\" + best + \", \"" +
+            "  double dx = best[2] - head[0];" +
+            "  double dy = best[3] - head[1];" +
+            "  return ((int) (best[0] - head[2])) + \"ms after (#\" + ((int) best[1]) + \", \"" +
             "      + (Math.round(Math.sqrt(dx * dx + dy * dy) * 10.0) / 10.0) + \" away)\";" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
             "public static void timelineLines(java.util.ArrayList out) {" +
             "  if (!wantRevived) { out.add(\"no rule asks for @Revived\"); }" +
+            "  java.util.ArrayList zs = zombiesHere();" +
             "  int from = goneHeads.size() - 6;" +
             "  if (from < 0) { from = 0; }" +
             "  if (goneHeads.isEmpty()) { out.add(\"no zombie head has gone on this floor\"); }" +
@@ -1712,18 +1794,17 @@ public class Patcher {
             "        : head[3] == 2.0 ? \"no totem near, raised nothing\" : \"no zombie made then\";" +
             "    wrapInto(out, \"head  \", \"went \" + ((int) head[2]) + \", lasted \" + ((int) head[4])" +
             "        + \"ms, totem \" + (head[6] > 9999.0 ? \"none\" : String.valueOf(Math.round(head[6] * 10.0) / 10.0))" +
-            "        + \" away; \" + fate + \"; nearest zombie made \" + zombieGap(head));" +
+            "        + \" away; \" + fate + \"; nearest zombie made \" + zombieGap(head, zs));" +
             "    h = h + 1;" +
             "  }" +
-            "  from = zombies.size() - 8;" +
+            "  from = zs.size() - 8;" +
             "  if (from < 0) { from = 0; }" +
-            "  if (zombies.isEmpty()) { out.add(\"no zombie met on this floor\"); }" +
+            "  if (zs.isEmpty()) { out.add(\"no zombie here\"); }" +
             "  int z = from;" +
-            "  while (z < zombies.size()) {" +
-            "    Object id = zombies.get(z);" +
-            "    double[] mon = (double[]) met.get(id);" +
-            "    out.add(\"zombie  #\" + id + \" made \" + ((int) mon[2])" +
-            "        + (metRaised(id) ? \", raised\" : \"\"));" +
+            "  while (z < zs.size()) {" +
+            "    double[] one = (double[]) zs.get(z);" +
+            "    out.add(\"zombie  #\" + ((int) one[1]) + \" made \" + ((int) one[0])" +
+            "        + (one[4] != 0.0 ? \", raised\" : \"\"));" +
             "    z = z + 1;" +
             "  }" +
             "}", c));
@@ -1753,9 +1834,10 @@ public class Patcher {
             "      if (((double[]) goneHeads.get(h))[3] == 2.0) { lone = lone + 1; }" +
             "      h = h + 1;" +
             "    }" +
-            "    wrapInto(out, \"heads  \", heads.size() + \" standing, \" + goneHeads.size() + \" gone, \"" +
+            "    int[] here = roomCounts();" +
+            "    wrapInto(out, \"heads  \", here[0] + \" standing, \" + goneHeads.size() + \" gone, \"" +
             "        + lone + \" with no totem;  \"" +
-            "        + met.size() + \" monsters met, \" + raisedHere() + \" raised, \"" +
+            "        + here[1] + \" zombies here, \" + here[2] + \" raised, \"" +
             "        + painted.size() + \" painted\");" +
             "    Object[] hit = null;" +
             "    java.util.Iterator it = lastHits.entrySet().iterator();" +
@@ -1769,7 +1851,8 @@ public class Patcher {
             "    String flag = (String) hit[1];" +
             "    wrapInto(out, \"flag  \", (flag == null || flag.length() == 0 ? \"none\" : flag)" +
             "        + (((Boolean) hit[5]).booleanValue() ? \", Revived\" : \"\")" +
-            "        + \"    actor \" + hit[4] + \", took \" + hit[3]);" +
+            "        + \"    actor \" + hit[4] + \", took \" + hit[3]" +
+            "        + (hit[7] == null ? \", out of range (remembered)\" : \"\"));" +
             "    wrapInto(out, \"head  \", (String) hit[6]);" +
             "    wrapInto(out, \"rule  \", hit[2] == null ? \"counted\"" +
             "        : \"left out by \" + ruleText((String) hit[2]));" +
@@ -2007,7 +2090,39 @@ public class Patcher {
         c.addField(CtField.make("public " + TALLY + " floor = new " + TALLY + "();", c));
         c.addField(CtField.make("public " + TALLY + " last = new " + TALLY + "();", c));
         c.addField(CtField.make("public " + TALLY + " run = new " + TALLY + "();", c));
+        // "scene:id" -> path index * 2, +1 if raised
+        c.addField(CtField.make("public java.util.LinkedHashMap known = new java.util.LinkedHashMap();", c));
+        c.addField(CtField.make("public java.util.ArrayList paths = new java.util.ArrayList();", c));
         c.addConstructor(CtNewConstructor.make("public " + RUN_N + "() { }", c));
+
+        c.addMethod(CtNewMethod.make(
+            "public void remember(String key, String path, boolean raised) {" +
+            "  int i = this.paths.indexOf(path);" +
+            "  if (i < 0) { this.paths.add(path); i = this.paths.size() - 1; }" +
+            "  Object had = this.known.get(key);" +
+            "  int code = i * 2 + (raised ? 1 : 0);" +
+            "  if (had != null) { code = code | (((Integer) had).intValue() & 1); }" +
+            "  this.known.put(key, new Integer(code));" +
+            "  if (this.known.size() > " + KNOWN_CAP + ") {" +
+            "    java.util.Iterator it = this.known.keySet().iterator();" +
+            "    it.next();" +
+            "    it.remove();" +
+            "  }" +
+            "}", c));
+
+        c.addMethod(CtNewMethod.make(
+            "public String recall(String key) {" +
+            "  Object had = this.known.get(key);" +
+            "  if (had == null) { return null; }" +
+            "  int code = ((Integer) had).intValue();" +
+            "  return (String) this.paths.get(code / 2);" +
+            "}", c));
+
+        c.addMethod(CtNewMethod.make(
+            "public boolean recallRaised(String key) {" +
+            "  Object had = this.known.get(key);" +
+            "  return had != null && (((Integer) had).intValue() & 1) == 1;" +
+            "}", c));
 
         c.addMethod(CtNewMethod.make(
             "public boolean isEmpty() {" +
@@ -2033,6 +2148,22 @@ public class Patcher {
             "    trail.append(walk.next());" +
             "  }" +
             "  out.setProperty(prefix + \".trail\", trail.toString());" +
+            "  StringBuffer table = new StringBuffer();" +
+            "  int p = 0;" +
+            "  while (p < this.paths.size()) {" +
+            "    if (p > 0) { table.append('|'); }" +
+            "    table.append(this.paths.get(p));" +
+            "    p = p + 1;" +
+            "  }" +
+            "  out.setProperty(prefix + \".paths\", table.toString());" +
+            "  StringBuffer seenHere = new StringBuffer();" +
+            "  java.util.Iterator k = this.known.entrySet().iterator();" +
+            "  while (k.hasNext()) {" +
+            "    java.util.Map$Entry e = (java.util.Map$Entry) k.next();" +
+            "    if (seenHere.length() > 0) { seenHere.append('|'); }" +
+            "    seenHere.append(e.getKey()).append('=').append(e.getValue());" +
+            "  }" +
+            "  out.setProperty(prefix + \".known\", seenHere.toString());" +
             "  this.run.save(out, prefix + \".run\");" +
             "  this.last.save(out, prefix + \".last\");" +
             "  this.floor.save(out, prefix + \".floor\");" +
@@ -2060,6 +2191,29 @@ public class Patcher {
             "    while (n < ids.length) {" +
             "      try { this.seen.add(new Integer(Integer.parseInt(ids[n]))); } catch (Throwable t) { }" +
             "      n = n + 1;" +
+            "    }" +
+            "  }" +
+            "  this.paths.clear();" +
+            "  String table = in.getProperty(prefix + \".paths\", \"\");" +
+            "  if (table.length() > 0) {" +
+            "    String[] names = table.split(\"[|]\");" +
+            "    int p = 0;" +
+            "    while (p < names.length) { this.paths.add(names[p]); p = p + 1; }" +
+            "  }" +
+            "  this.known.clear();" +
+            "  String seenHere = in.getProperty(prefix + \".known\", \"\");" +
+            "  if (seenHere.length() > 0) {" +
+            "    String[] pairs = seenHere.split(\"[|]\");" +
+            "    int q = 0;" +
+            "    while (q < pairs.length) {" +
+            "      int eq = pairs[q].indexOf('=');" +
+            "      try {" +
+            "        int code = Integer.parseInt(pairs[q].substring(eq + 1));" +
+            "        if (eq > 0 && code / 2 < this.paths.size()) {" +
+            "          this.known.put(pairs[q].substring(0, eq), new Integer(code));" +
+            "        }" +
+            "      } catch (Throwable t) { }" +
+            "      q = q + 1;" +
             "    }" +
             "  }" +
             "  this.run.load(in, prefix + \".run\");" +
@@ -2302,16 +2456,26 @@ public class Patcher {
 
     private static void fillLedger(Discovery.Discovered d, CtClass c) throws Exception {
         c.addMethod(CtNewMethod.make(
-            "public static java.io.File ledger(String base) {" +
-            "  String dir = System.getProperty(\"user.dir\");" +
-            "  if (dir == null) { dir = System.getProperty(\"user.home\"); }" +
-            "  String who = myName().replaceAll(\"[^A-Za-z0-9_-]\", \"_\");" +
-            "  return new java.io.File(dir," +
-            "      who.length() == 0 ? base + \".properties\" : base + \"-\" + who + \".properties\");" +
+            "public static String knightFile() {" +
+            "  return myName().replaceAll(\"[^A-Za-z0-9_-]\", \"_\");" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
-            "public static java.io.File ledger() { return ledger(\"damage-meter\"); }", c));
+            "public static java.io.File ledger() {" +
+            "  String who = knightFile();" +
+            "  return new java.io.File(new java.io.File(System.getProperty(\"user.home\"), \"" + LEDGER_DIR + "\")," +
+            "      (who.length() == 0 ? \"default\" : who) + \".properties\");" +
+            "}", c));
+
+        // older versions saved into the game folder
+        c.addMethod(CtNewMethod.make(
+            "public static java.io.File oldLedger(String base) {" +
+            "  String dir = System.getProperty(\"user.dir\");" +
+            "  if (dir == null) { return null; }" +
+            "  String who = knightFile();" +
+            "  return new java.io.File(dir," +
+            "      who.length() == 0 ? base + \".properties\" : base + \"-\" + who + \".properties\");" +
+            "}", c));
 
         c.addMethod(CtNewMethod.make(
             "public static void store() {" +
@@ -2333,6 +2497,7 @@ public class Patcher {
             "    }" +
             "    out.setProperty(\"parties\", names.toString());" +
             "    java.io.File ledger = ledger();" +
+            "    ledger.getParentFile().mkdirs();" +
             "    java.io.File part = new java.io.File(ledger.getPath() + \".part\");" +
             "    java.io.FileOutputStream file = new java.io.FileOutputStream(part);" +
             "    try { out.store(file, \"spiral knights damage meter\"); }" +
@@ -2342,6 +2507,7 @@ public class Patcher {
             "      part.renameTo(ledger);" +
             "    }" +
             "    written = taken_in;" +
+            "    memoDirty = false;" +
             "  } catch (Throwable t) { }" +
             "}", c));
 
@@ -2349,10 +2515,9 @@ public class Patcher {
             "public static void restore() {" +
             "  try {" +
             "    java.io.File from = ledger();" +
-            // from before the rename
-            "    if (!from.exists()) { from = ledger(\"dps-meter\"); }" +
-            "    if (!from.exists()) { from = new java.io.File(from.getParent(), \"dps-meter.properties\"); }" +
-            "    if (!from.exists()) { return; }" +
+            "    if (!from.exists()) { from = oldLedger(\"damage-meter\"); }" +
+            "    if (from == null || !from.exists()) { from = oldLedger(\"dps-meter\"); }" +
+            "    if (from == null || !from.exists()) { return; }" +
             "    java.util.Properties in = new java.util.Properties();" +
             "    java.io.FileInputStream file = new java.io.FileInputStream(from);" +
             "    try { in.load(file); } finally { file.close(); }" +
@@ -2642,7 +2807,8 @@ public class Patcher {
             "public static void beat() {" +
             "  try {" +
             "    pump();" +
-            "    if (taken_in != written) { store(); }" +
+            "    learn();" +
+            "    if (taken_in != written || memoDirty) { store(); }" +
             "    if (party == null || place() == null) { close(); return; }" +
             "    Object now = boss == null ? null" +
             "        : ((" + d.dirBaseClass + ") boss)." + d.currentObjMethod + "();" +
@@ -2728,6 +2894,11 @@ public class Patcher {
             "  this.since = 0.0f;" +
             "  " + MAIN + ".everyBeat();" +
             "}", c));
+    }
+
+    private static void hookSprite(CtClass spriteCt) throws Exception {
+        spriteCt.getMethod("remove", "(I)V").insertAfter(
+            "try { " + MAIN + ".headGone(this, $1); } catch (Throwable t) { }");
     }
 
     private static void hookDirector(Discovery.Discovered d, CtClass dirCt) throws Exception {

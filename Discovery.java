@@ -53,6 +53,8 @@ class Discovery {
     static final String HELM_SLOT = "0";
     static final String ACTOR = "com.threerings.tudey.data.actor.Actor";
     static final String MONSTER = "com.threerings.projectx.dungeon.data.actor.Monster";
+    static final String SCENE_MODEL = "com.threerings.tudey.data.TudeySceneModel";
+    static final String WHIRLED_MODEL = "com.threerings.whirled.data.SceneModel";
     static final String INT_MAP = "com.samskivert.util.HashIntMap";
     static final String VECTOR2F = "com.threerings.math.Vector2f";
     static final String ZOMBIE_HEAD = "Character/NPC/Monster/Undead/Parts/Zombie Head";
@@ -114,9 +116,9 @@ class Discovery {
         String actorRefMethod;
         String spriteMapField;
         String actorWhereMethod;
+        String sceneModelMethod;
         String modelClass;
         String colorStateClass;
-        String spriteGoneField;
         String cfgByNameMethod;
         String colorLookupMethod;
         String colorizedRootMethod;
@@ -316,11 +318,19 @@ class Discovery {
             }
         }).getReturnType().getName();
 
-        // remove(int) only stores the removal time
-        CtMethod gone = pool.get(d.spriteClass).getMethod("remove", "(I)V");
-        d.spriteGoneField = fieldWrittenBy(gone);
-        if (d.spriteGoneField == null) throw new RuntimeException("Cannot resolve spriteGoneField");
+        d.sceneModelMethod = uniqueMethod("sceneModelMethod", pool.get(d.sceneViewClass), m -> {
+            try {
+                return Modifier.isPublic(m.getModifiers())
+                    && m.getParameterTypes().length == 0
+                    && m.getReturnType().getName().equals(SCENE_MODEL);
+            } catch (NotFoundException e) {
+                return false;
+            }
+        }).getName();
 
+        // the sprite's remove(int) gets hooked, and reads the sprite's view
+        pool.get(d.spriteClass).getMethod("remove", "(I)V");
+        pool.get(d.spriteClass).getField("_view");
         declared(actorCt, "_created");
 
         d.actorWhereMethod = uniqueMethod("actorWhereMethod", actorCt, m -> {
@@ -652,24 +662,6 @@ class Discovery {
             }
         }
         throw new RuntimeException("Cannot find what prints \"" + SWEEP_MESSAGE + "\"");
-    }
-
-    static String fieldWrittenBy(CtMethod m) {
-        CodeAttribute code = m.getMethodInfo().getCodeAttribute();
-        if (code == null) return null;
-        try {
-            String found = null;
-            CodeIterator it = code.iterator();
-            while (it.hasNext()) {
-                int at = it.next();
-                if (it.byteAt(at) != Opcode.PUTFIELD) continue;
-                if (found != null) return null;
-                found = m.getMethodInfo().getConstPool().getFieldrefName(it.u16bitAt(at + 1));
-            }
-            return found;
-        } catch (BadBytecode e) {
-            return null;
-        }
     }
 
     static boolean plainFieldRead(CtMethod m) {
