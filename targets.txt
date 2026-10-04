@@ -1,0 +1,16 @@
+# hits on anything matching a rule here don't count. first match wins.
+#
+#   - name          config name contains "name"
+#   + name          always count, even if a later rule matches
+#   - @Health Only  loot flag (Primary, None, Health Only, Breakable Object, Tutorial)
+#   - @Revived      zombies a grim totem brought back
+#   - x  [id, id]   only on these missions
+#
+# catalogue.tsv has every hittable actor with its flag and config name.
+
+- @Health Only  [king_of_ashes]
+- @Revived
+- @Breakable Object
+- @Tutorial
+
+- Dynamic/Traps and Hazards/

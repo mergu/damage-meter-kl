@@ -1,0 +1,1028 @@
+# every actor that can be hit, and what it leaves behind
+# regenerate with ./catalogue.sh
+#
+# loot	impl	health	name
+-	Monster	0	Block/Treasure, Huge (Opening)
+-	Monster	11	Bullet/Monster/Flamethrower (Dynamic)
+-	ZMonster	0	Bullet/Monster/Rocket Puppy Rocket (Seaking)
+-	Monster	0	Bullet/Pet/Maskeraith/Haunting Haze, Bullet
+-	Monster	250	Character/Dev/Bad Dude
+-	Monster	9999	Character/Dev/Dummy Knight
+-	Monster	0	Character/Dev/Elevator-Loving Scuttlebot
+-	Monster	0	Character/Dev/Friendliest Gun Puppy, The
+-	Monster	0	Character/Dev/Hockey Puck
+-	Monster	0	Character/Dev/Horde Core
+-	Monster	115	Character/Dev/Jelly Cube
+-	Monster	0	Character/Dev/Punching Bag
+-	Monster	0	Character/Dev/Punching Bags/Jelly
+-	Monster	0	Character/Dev/Punching Bags/Undead
+-	Monster	0	Character/Dev/Punching Bags/Vanilla
+-	Monster	115	Character/Dev/Scardy Cube
+-	Monster	0	Character/Dev/Self-Destructing Monsters/Lumber
+-	Monster	0	Character/Dev/Shield Test
+-	Monster	25	Character/Dev/Shooter
+-	Monster	600	Character/Dev/TestDuke
+-	Monster	100	Character/Dev/playermarker
+-	Monster	999999	Character/NPC/Advanced Training Gym/Training Bag/Parts/Base
+-	Monster	999999	Character/NPC/Advanced Training Gym/Training Bag/Training Bag, Beast
+-	Monster	999999	Character/NPC/Advanced Training Gym/Training Bag/Training Bag, Construct
+-	Monster	999999	Character/NPC/Advanced Training Gym/Training Bag/Training Bag, Fiend
+-	Monster	999999	Character/NPC/Advanced Training Gym/Training Bag/Training Bag, Gremlin
+-	Monster	999999	Character/NPC/Advanced Training Gym/Training Bag/Training Bag, None
+-	Monster	999999	Character/NPC/Advanced Training Gym/Training Bag/Training Bag, Slime
+-	Monster	999999	Character/NPC/Advanced Training Gym/Training Bag/Training Bag, Undead
+-	Monster	0	Character/NPC/Advanced Training Gym/Training Cube
+-	Monster	0	Character/NPC/Advanced Training Gym/Training Target/Parts/Base
+-	Monster	0	Character/NPC/Advanced Training Gym/Training Target/Training Target, Bad
+-	Monster	0	Character/NPC/Advanced Training Gym/Training Target/Training Target, Good
+-	Monster	0	Character/NPC/Companions/Knights/Immortal/Parts/Base
+-	Monster	0	Character/NPC/Companions/Knights/Immortal/Parts/Base (Prisoner)
+-	Monster	0	Character/NPC/Companions/Knights/Immortal/Parts/Base (Standby)
+-	Monster	0	Character/NPC/Companions/Knights/Immortal/Prisoner Knights/Sword Knight/Tier 1
+-	Monster	0	Character/NPC/Companions/Knights/Immortal/Prisoner Knights/Sword Knight/Tier 2
+-	Monster	0	Character/NPC/Companions/Knights/Immortal/Prisoner Knights/Sword Knight/Tier 3
+-	Monster	1000000	Character/NPC/Companions/Knights/Immortal/Recruit Knights/Bomb Recruit
+-	Monster	1000000	Character/NPC/Companions/Knights/Immortal/Recruit Knights/Gun Recruit
+-	Monster	1000000	Character/NPC/Companions/Knights/Immortal/Recruit Knights/Sword Recruit
+-	Monster	0	Character/NPC/Companions/Knights/Immortal/Standby Knights/Tier 1
+-	Monster	0	Character/NPC/Companions/Knights/Immortal/Standby Knights/Tier 2
+-	Monster	0	Character/NPC/Companions/Knights/Immortal/Standby Knights/Tier 3
+-	Monster	0	Character/NPC/Companions/Knights/Immortal/Sword Knight/Tier 1
+-	Monster	0	Character/NPC/Companions/Knights/Immortal/Sword Knight/Tier 2
+-	Monster	0	Character/NPC/Companions/Knights/Immortal/Sword Knight/Tier 3
+-	Monster	1	Character/NPC/Companions/Knights/Parts/Shield
+-	Monster	0	Character/NPC/Companions/Knights/Parts/Sword Knight (Base)
+-	Monster	0	Character/NPC/Companions/Knights/Temporary/Ranger/Ranger, Gun
+-	Monster	0	Character/NPC/Companions/Knights/Unique/Gun Knight Companion
+-	Monster	0	Character/NPC/Companions/Knights/Unique/Parts/Base
+-	Monster	0	Character/NPC/Companions/Knights/Unique/Parts/Downed Knight
+-	Monster	0	Character/NPC/Companions/Knights/Unique/Parts/Gun Knight
+-	Monster	0	Character/NPC/Companions/Knights/Unique/Parts/Gun Knight (Ranger)
+-	Monster	0	Character/NPC/Companions/Knights/Unique/Parts/Sword Knight
+-	Monster	0	Character/NPC/Companions/Knights/Unique/Ranger
+-	Monster	0	Character/NPC/Companions/Knights/Unique/Rhendon
+-	Monster	0	Character/NPC/Companions/Knights/Unique/Rhendon (Artifact)
+-	Monster	0	Character/NPC/Companions/Knights/Unique/Sword Knight Companion
+-	Monster	1000000	Character/NPC/Companions/Knights/Unique/Vaelyn
+-	Monster	0	Character/NPC/Emberlight/Street Urchin (Wander)
+-	Monster	1000	Character/NPC/Gathering/Gathering Node
+-	Monster	1000	Character/NPC/Gathering/Parts/Base
+-	Monster	500	Character/NPC/Gathering/Parts/Base (No-Loot)
+-	Monster	500	Character/NPC/Gathering/Rock Node
+-	Monster	0	Character/NPC/Missions/Rank/01/1.1/Rhendon, Securing Camp
+-	Monster	0	Character/NPC/Missions/Rank/09/9.1/Arkus/Arkus, End
+-	Monster	0	Character/NPC/Missions/Rank/09/9.1/Arkus/Arkus, Stage 1
+-	Monster	0	Character/NPC/Missions/Rank/09/9.1/Arkus/Arkus, Stage 2
+-	Monster	0	Character/NPC/Missions/Rank/09/9.1/Arkus/Arkus, Stage 3
+-	Monster	0	Character/NPC/Missions/Rank/09/9.1/Arkus/Arkus, Trans 1-2
+-	Monster	0	Character/NPC/Missions/Rank/09/9.1/Arkus/Arkus, Trans 2-3
+-	Monster	0	Character/NPC/Missions/Rank/09/9.1/Arkus/Parts/Arkus, Base
+-	Monster	0	Character/NPC/Missions/Tutorial/Final Test/Mini Boss/Parts/Scorcher Mini Boss
+-	Monster	0	Character/NPC/Missions/Tutorial/Final Test/Mini Boss/Parts/Scorcher, Dazed
+-	Monster	0	Character/NPC/Missions/Tutorial/Final Test/Mini Boss/Scorcher Mini Boss 1
+-	Monster	0	Character/NPC/Missions/Tutorial/Final Test/Mini Boss/Scorcher Mini Boss 1.5
+-	Monster	0	Character/NPC/Missions/Tutorial/Final Test/Mini Boss/Scorcher Mini Boss 2
+-	Monster	0	Character/NPC/Missions/Tutorial/Final Test/Mini Boss/Scorcher Mini Boss 2.5
+-	Monster	0	Character/NPC/Missions/Tutorial/Final Test/Mini Boss/Scorcher Mini Boss 3
+-	Monster	0	Character/NPC/Missions/Tutorial/Final Test/Mini Boss/Scorcher, End
+Primary	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Alpha Ash Tail/Alpha Ash Tail 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Alpha Ash Tail/Alpha Ash Tail 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Alpha Ash Tail/Alpha Ash Tail 3
+Primary	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Alpha Frostifur/Alpha Frostifur 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Alpha Frostifur/Alpha Frostifur 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Alpha Frostifur/Alpha Frostifur 3
+Primary	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Alpha Voltail/Alpha Voltail 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Alpha Voltail/Alpha Voltail 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Alpha Voltail/Alpha Voltail 3
+Primary	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Alpha Wolver/Alpha Wolver 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Alpha Wolver/Alpha Wolver 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Alpha Wolver/Alpha Wolver 3
+-	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Parts/Mini Boss (Base)
+-	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Parts/Tier 1 (Base)
+-	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Parts/Tier 2 (Base)
+-	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Parts/Tier 3 (Base)
+Primary	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Rabid Alpha Wolver/Rabid Alpha Wolver 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Rabid Alpha Wolver/Rabid Alpha Wolver 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Alpha Wolver/Rabid Alpha Wolver/Rabid Alpha Wolver 3
+Tutorial	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Chromalisk Whelp (Intro)
+Tutorial	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Chromalisk Whelp (TG)
+Primary	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Chromalisk/Chromalisk 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Chromalisk/Chromalisk 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Chromalisk/Chromalisk 3
+Primary	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Electrolisk/Electrolisk 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Electrolisk/Electrolisk 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Electrolisk/Electrolisk 3
+-	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Parts/Chromalisk (base)
+Primary	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Parts/Chromalisk - Four Directional
+Primary	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Salamander/Salamander 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Salamander/Salamander 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Salamander/Salamander 3
+Primary	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Tundralisk/Tundralisk 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Tundralisk/Tundralisk 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Tundralisk/Tundralisk 3
+Primary	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Virulisk/Virulisk 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Virulisk/Virulisk 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Chromalisk/Virulisk/Virulisk 3
+-	Monster	0	Character/NPC/Monster/Beast/Dust Bunny (TG)
+Primary	Monster	0	Character/NPC/Monster/Beast/Dust Bunny/Blech Bunny/Blech Bunny 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Dust Bunny/Blech Bunny/Blech Bunny 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Dust Bunny/Blech Bunny/Blech Bunny 3
+Primary	Monster	0	Character/NPC/Monster/Beast/Dust Bunny/Dust Bunny/Dust Bunny 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Dust Bunny/Dust Bunny/Dust Bunny 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Dust Bunny/Dust Bunny/Dust Bunny 3
+Primary	Monster	0	Character/NPC/Monster/Beast/Dust Bunny/Jolt Bunny/Jolt Bunny 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Dust Bunny/Jolt Bunny/Jolt Bunny 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Dust Bunny/Jolt Bunny/Jolt Bunny 3
+-	Monster	0	Character/NPC/Monster/Beast/Dust Bunny/Parts/Base
+Primary	Monster	0	Character/NPC/Monster/Beast/Dust Bunny/Snow Bunny/Snow Bunny 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Dust Bunny/Snow Bunny/Snow Bunny 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Dust Bunny/Snow Bunny/Snow Bunny 3
+Primary	Monster	0	Character/NPC/Monster/Beast/Dust Bunny/Toast Bunny/Toast Bunny 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Dust Bunny/Toast Bunny/Toast Bunny 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Dust Bunny/Toast Bunny/Toast Bunny 3
+Primary	Monster	0	Character/NPC/Monster/Beast/Kleptolisk/Kleptolisk 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Kleptolisk/Kleptolisk 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Kleptolisk/Kleptolisk 3
+-	Monster	0	Character/NPC/Monster/Beast/Lizardman/Hunter/Ironscale Hunter 1
+-	Monster	0	Character/NPC/Monster/Beast/Lizardman/Hunter/Ironscale Hunter 2
+-	Monster	0	Character/NPC/Monster/Beast/Lizardman/Hunter/Ironscale Hunter 3
+-	Monster	0	Character/NPC/Monster/Beast/Lizardman/Hunter/Parts/Base
+-	Monster	0	Character/NPC/Monster/Beast/Lizardman/Hunter/Parts/Base Hunter
+-	Monster	0	Character/NPC/Monster/Beast/Lizardman/Parts/Lizardman Base
+-	Monster	0	Character/NPC/Monster/Beast/New Vog Cub/Vog Cub
+-	Monster	0	Character/NPC/Monster/Beast/New Vog Cub/Vog Cub 5
+-	Monster	0	Character/NPC/Monster/Beast/Parts/Chromalisk (base)
+-	Monster	500	Character/NPC/Monster/Beast/Vog Cub
+Primary	Monster	0	Character/NPC/Monster/Beast/Wolver/Ash Tail/Ash Tail 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Wolver/Ash Tail/Ash Tail 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Wolver/Ash Tail/Ash Tail 3
+Primary	Monster	0	Character/NPC/Monster/Beast/Wolver/Frostifur/Frostifur 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Wolver/Frostifur/Frostifur 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Wolver/Frostifur/Frostifur 3
+-	Monster	0	Character/NPC/Monster/Beast/Wolver/Parts/Tier 1 (Base)
+-	Monster	0	Character/NPC/Monster/Beast/Wolver/Parts/Tier 2 (Base)
+-	Monster	0	Character/NPC/Monster/Beast/Wolver/Parts/Tier 3 (Base)
+Primary	Monster	0	Character/NPC/Monster/Beast/Wolver/Rabid Wolver/Rabid Wolver 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Wolver/Rabid Wolver/Rabid Wolver 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Wolver/Rabid Wolver/Rabid Wolver 3
+Primary	Monster	0	Character/NPC/Monster/Beast/Wolver/Voltail/Voltail 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Wolver/Voltail/Voltail 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Wolver/Voltail/Voltail 3
+-	Monster	0	Character/NPC/Monster/Beast/Wolver/Wolver (TG)
+Primary	Monster	0	Character/NPC/Monster/Beast/Wolver/Wolver/Wolver 1
+Primary	Monster	0	Character/NPC/Monster/Beast/Wolver/Wolver/Wolver 2
+Primary	Monster	0	Character/NPC/Monster/Beast/Wolver/Wolver/Wolver 3
+-	Monster	0	Character/NPC/Monster/Boss/Collector/Collector
+-	Monster	0	Character/NPC/Monster/Boss/Collector/Collector (Shock)
+Primary	Monster	0	Character/NPC/Monster/Boss/Crimson Order/Herex/Herex, Stage 1
+-	Monster	0	Character/NPC/Monster/Boss/Crimson Order/Herex/Herex, Watcher
+-	Monster	0	Character/NPC/Monster/Boss/Crimson Order/Herex/Parts/Base (Herex)
+-	Monster	0	Character/NPC/Monster/Boss/Crimson Order/Herex/Parts/Herex, Aggro
+-	Monster	0	Character/NPC/Monster/Boss/Crimson Order/Herex/Parts/Herex, Watcher
+-	Monster	0	Character/NPC/Monster/Boss/Crimson Order/Sputterspark/Parts/Sputterspark Base
+Primary	Monster	0	Character/NPC/Monster/Boss/Crimson Order/Sputterspark/Parts/Tier 3
+Primary	Monster	0	Character/NPC/Monster/Boss/Crimson Order/Sputterspark/Sputterspark
+-	Monster	0	Character/NPC/Monster/Boss/Crimson Order/Warmaster Seerus/Parts/Base (Warmaster Seerus)
+-	Monster	0	Character/NPC/Monster/Boss/Crimson Order/Warmaster Seerus/Parts/Warmaster Seerus, Escape
+-	Monster	0	Character/NPC/Monster/Boss/Crimson Order/Warmaster Seerus/Parts/Warmaster Seerus, Watcher
+-	Monster	0	Character/NPC/Monster/Boss/Crimson Order/Warmaster Seerus/Warmaster Seerus
+-	Monster	0	Character/NPC/Monster/Boss/Crimson Order/Warmaster Seerus/Warmaster Seerus, Watcher
+-	Monster	0	Character/NPC/Monster/Boss/Harvester/Harvester
+-	Monster	0	Character/NPC/Monster/Boss/Harvester/Parts/Grasping Hands, Bullet
+-	Monster	0	Character/NPC/Monster/Boss/Harvester/Parts/Hand/Parts/Hand (Base)
+-	Monster	0	Character/NPC/Monster/Boss/Harvester/Parts/Soul
+-	Monster	0	Character/NPC/Monster/Boss/Heart of Ice/Heart of Ice
+-	Monster	0	Character/NPC/Monster/Boss/Heart of Ice/Parts/HoI, Base
+-	Monster	0	Character/NPC/Monster/Boss/Heart of Ice/Parts/HoI, Ice Base
+None	Monster	0	Character/NPC/Monster/Boss/Heart of Ice/Parts/HoI, Stage 1
+None	Monster	0	Character/NPC/Monster/Boss/Heart of Ice/Parts/HoI, Stage 2
+Primary	Monster	0	Character/NPC/Monster/Boss/Heart of Ice/Parts/HoI, Stage 3
+-	Monster	0	Character/NPC/Monster/Boss/Heart of Ice/Parts/HoI, Start
+None	Monster	0	Character/NPC/Monster/Boss/Heart of Ice/Parts/Hunting Spirits
+-	Monster	0	Character/NPC/Monster/Boss/Margrel/Margrel
+-	Monster	0	Character/NPC/Monster/Boss/Margrel/Parts/Fleeing Civilians/Armor
+-	Monster	0	Character/NPC/Monster/Boss/Margrel/Parts/Fleeing Civilians/Spiral Quarter Master
+-	Monster	0	Character/NPC/Monster/Boss/Margrel/Parts/Fleeing Civilians/Token Trader
+-	Monster	0	Character/NPC/Monster/Boss/Margrel/Parts/Intro bullet
+-	Monster	0	Character/NPC/Monster/Boss/Margrel/Parts/Minion bullet
+-	Monster	0	Character/NPC/Monster/Boss/Margrel/Parts/Seaking bullet
+Primary	Monster	0	Character/NPC/Monster/Boss/Mega Knight/Mega Knight Mini boss
+-	Monster	0	Character/NPC/Monster/Boss/Roarmulus Twins/East
+-	Monster	0	Character/NPC/Monster/Boss/Roarmulus Twins/East (2)
+-	Monster	0	Character/NPC/Monster/Boss/Roarmulus Twins/East (3)
+-	Monster	0	Character/NPC/Monster/Boss/Roarmulus Twins/Parts/Twin (Base)
+-	Monster	0	Character/NPC/Monster/Boss/Roarmulus Twins/Parts/Twin (Fire, Base)
+-	Monster	0	Character/NPC/Monster/Boss/Roarmulus Twins/Parts/Twin (Simple, Base)
+-	Monster	0	Character/NPC/Monster/Boss/Roarmulus Twins/Ultimate/East
+-	Monster	0	Character/NPC/Monster/Boss/Roarmulus Twins/Ultimate/East (2)
+-	Monster	0	Character/NPC/Monster/Boss/Roarmulus Twins/Ultimate/East (3)
+-	Monster	0	Character/NPC/Monster/Boss/Roarmulus Twins/Ultimate/West
+-	Monster	0	Character/NPC/Monster/Boss/Roarmulus Twins/Ultimate/West (2)
+-	Monster	0	Character/NPC/Monster/Boss/Roarmulus Twins/Ultimate/West (3)
+-	Monster	0	Character/NPC/Monster/Boss/Roarmulus Twins/West
+-	Monster	0	Character/NPC/Monster/Boss/Roarmulus Twins/West (2)
+-	Monster	0	Character/NPC/Monster/Boss/Roarmulus Twins/West (3)
+-	Monster	0	Character/NPC/Monster/Boss/Royal Jelly (v2)/Parts/Royal Jelly (Base)
+-	Monster	0	Character/NPC/Monster/Boss/Royal Jelly (v2)/Parts/Royal Jelly (Base) (Phase 3)
+-	Monster	0	Character/NPC/Monster/Boss/Royal Jelly (v2)/Parts/Royal Jelly (Transition)
+Health Only	Monster	0	Character/NPC/Monster/Boss/Royal Jelly (v2)/Parts/Royal Polyp
+-	Monster	0	Character/NPC/Monster/Boss/Royal Jelly (v2)/Royal Jelly (Stage 1)
+-	Monster	0	Character/NPC/Monster/Boss/Royal Jelly (v2)/Royal Jelly (Stage 2)
+-	Monster	0	Character/NPC/Monster/Boss/Royal Jelly (v2)/Royal Jelly (Stage 3)
+-	Monster	0	Character/NPC/Monster/Boss/Royal Jelly (v2)/Royal Jelly (Stage 4)
+-	Monster	0	Character/NPC/Monster/Boss/Royal Jelly (v2)/Ultimate/Royal Jelly (Stage 1)
+-	Monster	0	Character/NPC/Monster/Boss/Royal Jelly (v2)/Ultimate/Royal Jelly (Stage 2)
+-	Monster	0	Character/NPC/Monster/Boss/Royal Jelly (v2)/Ultimate/Royal Jelly (Stage 3)
+-	Monster	0	Character/NPC/Monster/Boss/Royal Jelly (v2)/Ultimate/Royal Jelly (Stage 4)
+-	Monster	0	Character/NPC/Monster/Boss/Royal Jelly/Parts/Royal Jelly (Base)
+-	Monster	0	Character/NPC/Monster/Boss/Royal Jelly/Parts/Royal Jelly (Base) (Phase 2)
+-	Monster	0	Character/NPC/Monster/Boss/Royal Jelly/Parts/Royal Mini/Parts/Jelly Cube
+None	Monster	0	Character/NPC/Monster/Boss/Royal Jelly/Parts/Royal Mini/Parts/Royal Mini (Base)
+None	Monster	0	Character/NPC/Monster/Boss/Royal Jelly/Parts/Royal Mini/Royal Mini 1
+None	Monster	0	Character/NPC/Monster/Boss/Royal Jelly/Parts/Royal Mini/Royal Mini Ice
+None	Monster	0	Character/NPC/Monster/Boss/Royal Jelly/Parts/Royal Mini/Royal Mini, No Despawn 
+None	Monster	0	Character/NPC/Monster/Boss/Royal Jelly/Parts/Royal Mini/Royal Mini, No Despawn  (Ice)
+-	Monster	0	Character/NPC/Monster/Boss/Royal Jelly/Royal Jelly 1
+-	Monster	0	Character/NPC/Monster/Boss/Royal Jelly/Royal Jelly 2
+-	Monster	0	Character/NPC/Monster/Boss/Royal Jelly/Royal Jelly 3
+-	Monster	0	Character/NPC/Monster/Boss/Scorcher Mini Boss/Scorcher Mini Boss
+-	Monster	0	Character/NPC/Monster/Boss/Snarbolax/Parts/Snarbolax, Chase
+-	Monster	0	Character/NPC/Monster/Boss/Snarbolax/Parts/Snarbolax, Retreat
+-	Monster	0	Character/NPC/Monster/Boss/Snarbolax/Parts/Snarbolax, Watcher
+-	Monster	0	Character/NPC/Monster/Boss/Snarbolax/Snarbolax
+-	Monster	0	Character/NPC/Monster/Boss/Swarm/Part/Core
+-	Monster	0	Character/NPC/Monster/Boss/Swarm/Part/Core (Prop)
+Health Only	Monster	0	Character/NPC/Monster/Boss/Swarm/Part/Shadow Monster/Void Gel
+Health Only	Monster	0	Character/NPC/Monster/Boss/Swarm/Part/Shadow Monster/Void Gremlin
+-	Monster	0	Character/NPC/Monster/Boss/Swarm/Part/Shadow Monster/Void Sentinel
+-	Monster	0	Character/NPC/Monster/Boss/Swarm/Part/Shadow Monster/Void Wolver
+-	Monster	0	Character/NPC/Monster/Boss/Swarm/Part/Shadow Monster/Void Zombie
+-	Monster	99999	Character/NPC/Monster/Boss/Swarm/Swarm
+Primary	Monster	0	Character/NPC/Monster/Boss/Toxic Plant Scorcher/Toxic Plant Scorcher
+-	Monster	1440	Character/NPC/Monster/Boss/Tutorial, Ironwood Giant/Ironwood Giant
+-	Monster	5000	Character/NPC/Monster/Boss/Vanaduke/Mask Base
+-	Monster	5000	Character/NPC/Monster/Boss/Vanaduke/Mask Stage 1
+-	Monster	5000	Character/NPC/Monster/Boss/Vanaduke/Mask Stage 2
+Health Only	Monster	0	Character/NPC/Monster/Boss/Vanaduke/Part/Deadnaught
+Health Only	Monster	0	Character/NPC/Monster/Boss/Vanaduke/Part/Dreadnaught
+-	Monster	1	Character/NPC/Monster/Boss/Vanaduke/Part/Mask Soul
+-	Monster	5000	Character/NPC/Monster/Boss/Vanaduke/Part/Mask Stage 2
+Health Only	Monster	0	Character/NPC/Monster/Boss/Vanaduke/Part/Slag Curser Minion
+Health Only	Monster	0	Character/NPC/Monster/Boss/Vanaduke/Part/Slag Walker Minion
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Part/Stage 1
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Part/Stage 1 Complete
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Part/Stage 2
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Part/Stage 2 Complete
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Part/Stage 3
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Stage 1
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Stage 1 Complete
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Stage 2
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Stage 2 Complete
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Stage 3
+-	Monster	5000	Character/NPC/Monster/Boss/Vanaduke/Ultimate/Mask Stage 1
+-	Monster	5000	Character/NPC/Monster/Boss/Vanaduke/Ultimate/Mask Stage 2
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Ultimate/Stage 1
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Ultimate/Stage 1 Complete
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Ultimate/Stage 2
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Ultimate/Stage 2 Complete
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Ultimate/Stage 3
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Ultimate/Ultimate Vanaduke Start
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Vanaduke Base
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/Vanaduke Start
+-	Monster	5000	Character/NPC/Monster/Boss/Vanaduke/_Mask Stage 3
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/_Stage 1
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/_Stage 2
+-	Monster	15000	Character/NPC/Monster/Boss/Vanaduke/_Stage 3
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Blastcore (Modular)
+-	Monster	0	Character/NPC/Monster/Construct/Blastcore/Parts/Base (Blastcore)
+None	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP ArtilleryBoss (Scripted)
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP ArtilleryMiniboss (Scripted)
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP ArtilleryMiniboss (Scripted, Weaker)
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP ArtilleryMiniboss Support
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP ArtilleryOnlyCore
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP BlastJellyCore
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP BulletWheelCore
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP FireBurstCore
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP HealCore
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP LaserPrismCore
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP LaserWallCore
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP Minelayer
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP Minelayer (Freeze)
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP NSEWBlastNetCore
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP NSEWBulletPattern
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP RocketCore
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP RocketCore (High Temp Hostages)
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP ScattershotCore
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP ShadowCore
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP ShockCloudCore
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP SpikeCore
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP ToxiCloudCore
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/BP Training Grounds
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Blastcore (Example)
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BombCore
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BossCoreLeft
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BossCoreLeft2
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BossCoreLeft3
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BossCoreMain
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BossCoreMain2_t1
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BossCoreMain2_t2
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BossCoreMain2_t3
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BossCoreMain3
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BossCoreRight
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BossCoreRight2
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BossCoreRight3
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BossCoreStage1
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BossCoreStage2a
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BossCoreStage2b
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BossCoreStage3a
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BossCoreStage3b
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BossCoreStage3c
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson BulletCore
+Primary	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Crimson BossCores/Crimson ShieldCore
+None	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Ghost in the Machine/GitM, Stage1
+None	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Ghost in the Machine/GitM, Stage2
+None	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Ghost in the Machine/GitM, Stage3
+None	Monster	0	Character/NPC/Monster/Construct/Blastcore/Presets/Ghost in the Machine/Parts/Base
+Primary	Monster	0	Character/NPC/Monster/Construct/Gold Gun Puppy
+None	Monster	0	Character/NPC/Monster/Construct/Gun Puppy/Gun Puppy (No Loot)
+Tutorial	Monster	0	Character/NPC/Monster/Construct/Gun Puppy/Gun Puppy (TG)
+Primary	Monster	0	Character/NPC/Monster/Construct/Gun Puppy/Gun Puppy/Gun Puppy 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Gun Puppy/Gun Puppy/Gun Puppy 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Gun Puppy/Gun Puppy/Gun Puppy 3
+Primary	Monster	0	Character/NPC/Monster/Construct/Gun Puppy/Red Rover/Red Rover 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Gun Puppy/Red Rover/Red Rover 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Gun Puppy/Red Rover/Red Rover 3
+Primary	Monster	0	Character/NPC/Monster/Construct/Gun Puppy/Sick Puppy/Sick Puppy 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Gun Puppy/Sick Puppy/Sick Puppy 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Gun Puppy/Sick Puppy/Sick Puppy 3
+Primary	Monster	0	Character/NPC/Monster/Construct/Gun Puppy/Slush Puppy/Slush Puppy 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Gun Puppy/Slush Puppy/Slush Puppy 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Gun Puppy/Slush Puppy/Slush Puppy 3
+Primary	Monster	0	Character/NPC/Monster/Construct/Gun Puppy/Spark Puppy/Spark Puppy 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Gun Puppy/Spark Puppy/Spark Puppy 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Gun Puppy/Spark Puppy/Spark Puppy 3
+-	Monster	0	Character/NPC/Monster/Construct/Ironwood Sentinel/Ironwood Sentinel
+Primary	Monster	0	Character/NPC/Monster/Construct/Love Puppy/Love Puppy
+Primary	Monster	0	Character/NPC/Monster/Construct/Lumber/Electreant/Electreant 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Lumber/Electreant/Electreant 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Lumber/Electreant/Electreant 3
+Tutorial	Monster	0	Character/NPC/Monster/Construct/Lumber/Lumber (TG)
+Primary	Monster	0	Character/NPC/Monster/Construct/Lumber/Lumber/Lumber 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Lumber/Lumber/Lumber 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Lumber/Lumber/Lumber 3
+-	Monster	0	Character/NPC/Monster/Construct/Lumber/Parts/Lumber (base)
+Primary	Monster	0	Character/NPC/Monster/Construct/Lumber/Redward/Redward 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Lumber/Redward/Redward 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Lumber/Redward/Redward 3
+Primary	Monster	0	Character/NPC/Monster/Construct/Lumber/Silversap/Silversap 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Lumber/Silversap/Silversap 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Lumber/Silversap/Silversap 3
+Primary	Monster	0	Character/NPC/Monster/Construct/Lumber/Vilewood/Vilewood 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Lumber/Vilewood/Vilewood 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Lumber/Vilewood/Vilewood 3
+None	Monster	0	Character/NPC/Monster/Construct/Mecha Knight Bodyguard/Sword/Mecha Knight Bodyguard
+None	Monster	0	Character/NPC/Monster/Construct/Mecha Knight Bodyguard/Sword/Mecha Knight Bodyguard 1
+None	Monster	0	Character/NPC/Monster/Construct/Mecha Knight Bodyguard/Sword/Mecha Knight Bodyguard 2
+None	Monster	0	Character/NPC/Monster/Construct/Mecha Knight Bodyguard/Sword/Parts/Sword (Base)
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Cryo Knight/Cryo Knight 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Cryo Knight/Cryo Knight 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Cryo Knight/Cryo Knight 3
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Firo Knight/Firo Knight 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Firo Knight/Firo Knight 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Firo Knight/Firo Knight 3
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Mecha Knight/Mecha Knight 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Mecha Knight/Mecha Knight 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Mecha Knight/Mecha Knight 3
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Parts/Tier 1 (Base)
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Parts/Tier 2 (Base)
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Parts/Tier 3 (Base)
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Poison Knight/Poison Knight 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Poison Knight/Poison Knight 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Poison Knight/Poison Knight 3
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Sword/Mecha Knight
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Sword/Mecha Knight Mk II
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Sword/Mecha Knight Mk III
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Volt Knight/Volt Knight 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Volt Knight/Volt Knight 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Mecha Knight/Volt Knight/Volt Knight 3
+Primary	Monster	0	Character/NPC/Monster/Construct/Old/Mecha Knight
+Primary	Monster	0	Character/NPC/Monster/Construct/Old/Mecha Knight (Fang of Vog)
+None	Monster	0	Character/NPC/Monster/Construct/Old/Mecha Knight (Friendly)
+Primary	Monster	0	Character/NPC/Monster/Construct/Old/Mecha Knight Mk II
+Primary	Monster	0	Character/NPC/Monster/Construct/Old/Mecha Knight Mk III
+-	Monster	0	Character/NPC/Monster/Construct/Parts/Gun Puppy (Base)
+-	Monster	0	Character/NPC/Monster/Construct/Parts/Mecha Knight (Base)
+Primary	Monster	0	Character/NPC/Monster/Construct/Parts/Mecha Knight (Sword 3 Hit)
+Primary	Monster	0	Character/NPC/Monster/Construct/Parts/Mecha Knight (Sword Base)
+-	Monster	1	Character/NPC/Monster/Construct/Parts/MechaShield
+-	Monster	100	Character/NPC/Monster/Construct/Plasma Dog
+-	Monster	0	Character/NPC/Monster/Construct/Retrode/Custom/Rescue Camp attacker
+Primary	Monster	0	Character/NPC/Monster/Construct/Retrode/Hotrode/Hotrode 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Retrode/Hotrode/Hotrode 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Retrode/Hotrode/Hotrode 3
+Primary	Monster	0	Character/NPC/Monster/Construct/Retrode/Isotrode/Isotrode 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Retrode/Isotrode/Isotrode 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Retrode/Isotrode/Isotrode 3
+-	Monster	0	Character/NPC/Monster/Construct/Retrode/Parts/Zombie (Base)
+Tutorial	Monster	0	Character/NPC/Monster/Construct/Retrode/Retrode (TG)
+Primary	Monster	0	Character/NPC/Monster/Construct/Retrode/Retrode/Retrode 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Retrode/Retrode/Retrode 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Retrode/Retrode/Retrode 3
+Primary	Monster	0	Character/NPC/Monster/Construct/Retrode/Sleetrode/Sleetrode 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Retrode/Sleetrode/Sleetrode 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Retrode/Sleetrode/Sleetrode 3
+Primary	Monster	0	Character/NPC/Monster/Construct/Retrode/Voltrode/Voltrode 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Retrode/Voltrode/Voltrode 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Retrode/Voltrode/Voltrode 3
+None	Monster	0	Character/NPC/Monster/Construct/Rocket Puppy/Rocket Puppy (No Loot)
+Primary	Monster	0	Character/NPC/Monster/Construct/Rocket Puppy/Rocket Puppy/Rocket Puppy 1
+Primary	Monster	0	Character/NPC/Monster/Construct/Rocket Puppy/Rocket Puppy/Rocket Puppy 2
+Primary	Monster	0	Character/NPC/Monster/Construct/Rocket Puppy/Rocket Puppy/Rocket Puppy 3
+Primary	Monster	0	Character/NPC/Monster/Construct/Scuttlebot/Brumabot/Brumabot Mk I
+Primary	Monster	0	Character/NPC/Monster/Construct/Scuttlebot/Brumabot/Brumabot Mk II
+Primary	Monster	0	Character/NPC/Monster/Construct/Scuttlebot/Brumabot/Brumabot Mk III
+Primary	Monster	0	Character/NPC/Monster/Construct/Scuttlebot/Cinderbot/Cinderbot Mk I
+Primary	Monster	0	Character/NPC/Monster/Construct/Scuttlebot/Cinderbot/Cinderbot Mk II
+Primary	Monster	0	Character/NPC/Monster/Construct/Scuttlebot/Cinderbot/Cinderbot Mk III
+Primary	Monster	0	Character/NPC/Monster/Construct/Scuttlebot/Hazbot/Hazbot Mk I
+Primary	Monster	0	Character/NPC/Monster/Construct/Scuttlebot/Hazbot/Hazbot Mk II
+Primary	Monster	0	Character/NPC/Monster/Construct/Scuttlebot/Hazbot/Hazbot Mk III
+-	Monster	0	Character/NPC/Monster/Construct/Scuttlebot/Parts/Scuttlebot (base)
+Tutorial	Monster	0	Character/NPC/Monster/Construct/Scuttlebot/Scuttlebot (TG)
+Primary	Monster	0	Character/NPC/Monster/Construct/Scuttlebot/Scuttlebot/Scuttlebot Mk I
+Primary	Monster	0	Character/NPC/Monster/Construct/Scuttlebot/Scuttlebot/Scuttlebot Mk II
+Primary	Monster	0	Character/NPC/Monster/Construct/Scuttlebot/Scuttlebot/Scuttlebot Mk III
+Primary	Monster	0	Character/NPC/Monster/Construct/Scuttlebot/Surgebot/Surgebot Mk I
+Primary	Monster	0	Character/NPC/Monster/Construct/Scuttlebot/Surgebot/Surgebot Mk II
+Primary	Monster	0	Character/NPC/Monster/Construct/Scuttlebot/Surgebot/Surgebot Mk III
+-	Monster	0	Character/NPC/Monster/Construct/Tentacle/Parts/Tentacle (Base)
+-	Monster	999999	Character/NPC/Monster/Construct/Tortodrone/Parts/Invulnerability shell
+-	Monster	0	Character/NPC/Monster/Construct/Tortodrone/Parts/Tortodrone (Mortal)
+-	Monster	0	Character/NPC/Monster/Construct/Tortodrone/Parts/Tortodrone (base)
+-	Monster	999999	Character/NPC/Monster/Construct/Tortodrone/Parts/Tortodrone Corpse
+-	Monster	0	Character/NPC/Monster/Construct/Tortodrone/Tortodrone
+-	Monster	0	Character/NPC/Monster/Construct/Tortodrone/Tortodrone (corrupted)
+-	Monster	0	Character/NPC/Monster/Construct/Tortodrone/Tortodrone (hostile)
+Health Only	Monster	0	Character/NPC/Monster/Drone/Damage/Elemental Shankle
+-	Monster	0	Character/NPC/Monster/Drone/Damage/Invulnerable/Golden Elemental Shankle
+-	Monster	0	Character/NPC/Monster/Drone/Damage/Invulnerable/Golden Piercing Shankle
+-	Monster	0	Character/NPC/Monster/Drone/Damage/Invulnerable/Golden Shadow Shankle
+-	Monster	0	Character/NPC/Monster/Drone/Damage/Invulnerable/Golden Shankle
+Health Only	Monster	0	Character/NPC/Monster/Drone/Damage/Parts/Base
+-	Monster	0	Character/NPC/Monster/Drone/Damage/Parts/Base (Invulnerable)
+Health Only	Monster	0	Character/NPC/Monster/Drone/Damage/Piercing Shankle
+Health Only	Monster	0	Character/NPC/Monster/Drone/Damage/Shadow Shankle
+Health Only	Monster	0	Character/NPC/Monster/Drone/Damage/Shankle
+-	Monster	0	Character/NPC/Monster/Drone/Lost Soul/Parts/Fire Soul
+-	Monster	0	Character/NPC/Monster/Drone/Lost Soul/Parts/Freeze Soul
+-	Monster	0	Character/NPC/Monster/Drone/Lost Soul/Parts/Harvested Soul
+-	Monster	0	Character/NPC/Monster/Drone/Lost Soul/Parts/Lost Soul
+-	Monster	0	Character/NPC/Monster/Drone/Lost Soul/Parts/Parts/Harvested Soul Base
+-	Monster	0	Character/NPC/Monster/Drone/Lost Soul/Parts/Parts/Soul Base
+-	Monster	0	Character/NPC/Monster/Drone/Lost Soul/Parts/Poison Soul
+-	Monster	0	Character/NPC/Monster/Drone/Lost Soul/Parts/Shock Soul
+-	Monster	0	Character/NPC/Monster/Drone/Lost Soul/Parts/Test Soul
+-	Monster	0	Character/NPC/Monster/Drone/Lost Soul/Parts/Void Soul
+-	Monster	0	Character/NPC/Monster/Drone/Parts/Base
+-	Monster	0	Character/NPC/Monster/Drone/Parts/Base (Invulnerable)
+Health Only	Monster	0	Character/NPC/Monster/Drone/Status/Bog Wisp
+Health Only	Monster	0	Character/NPC/Monster/Drone/Status/Dream Wisp
+-	Monster	0	Character/NPC/Monster/Drone/Status/Invulnerable/Golden Bog Wisp
+-	Monster	0	Character/NPC/Monster/Drone/Status/Invulnerable/Golden Dream Wisp
+-	Monster	0	Character/NPC/Monster/Drone/Status/Invulnerable/Golden Storm Wisp
+-	Monster	0	Character/NPC/Monster/Drone/Status/Invulnerable/Golden Volcanic Wisp
+-	Monster	0	Character/NPC/Monster/Drone/Status/Invulnerable/Golden Winter Wisp
+Health Only	Monster	0	Character/NPC/Monster/Drone/Status/Parts/Base
+-	Monster	0	Character/NPC/Monster/Drone/Status/Parts/Base (Invulnerable)
+Health Only	Monster	0	Character/NPC/Monster/Drone/Status/Storm Wisp
+Health Only	Monster	0	Character/NPC/Monster/Drone/Status/Volcanic Wisp
+Health Only	Monster	0	Character/NPC/Monster/Drone/Status/Winter Wisp
+Primary	Monster	0	Character/NPC/Monster/Event/Anniversary/Cake Bot/Cake Bot 1
+Primary	Monster	0	Character/NPC/Monster/Event/Anniversary/Cake Bot/Cake Bot 2
+Primary	Monster	0	Character/NPC/Monster/Event/Anniversary/Cake Bot/Cake Bot 3
+Primary	Monster	0	Character/NPC/Monster/Event/Anniversary/Cake Bot/Dread Cake Bot 1
+Primary	Monster	0	Character/NPC/Monster/Event/Anniversary/Cake Bot/Dread Cake Bot 2
+Primary	Monster	0	Character/NPC/Monster/Event/Anniversary/Cake Bot/Dread Cake Bot 3
+-	Monster	0	Character/NPC/Monster/Event/Anniversary/Cake Bot/Parts/Zombie (Base)
+Health Only	Monster	115	Character/NPC/Monster/Event/Anniversary/Creep Cake Mini/Creep Cake Mini
+Primary	Monster	0	Character/NPC/Monster/Event/Anniversary/Creep Cake/Creep Cake 1
+Primary	Monster	0	Character/NPC/Monster/Event/Anniversary/Creep Cake/Creep Cake 2
+Primary	Monster	0	Character/NPC/Monster/Event/Anniversary/Creep Cake/Creep Cake 3
+Primary	Monster	0	Character/NPC/Monster/Event/Anniversary/Creep Cake/Dread Velvet/Dread Velvet 1
+Primary	Monster	0	Character/NPC/Monster/Event/Anniversary/Creep Cake/Dread Velvet/Dread Velvet 2
+Primary	Monster	0	Character/NPC/Monster/Event/Anniversary/Creep Cake/Dread Velvet/Dread Velvet 3
+-	Monster	0	Character/NPC/Monster/Event/Anniversary/Creep Cake/Parts/Base Cake
+Primary	Monster	0	Character/NPC/Monster/Event/Anniversary/Creep Cake/Spark Cake/Spark Cake 1
+Primary	Monster	0	Character/NPC/Monster/Event/Anniversary/Creep Cake/Spark Cake/Spark Cake 2
+Primary	Monster	0	Character/NPC/Monster/Event/Anniversary/Creep Cake/Spark Cake/Spark Cake 3
+Primary	Monster	0	Character/NPC/Monster/Event/Anniversary/Gremlin Chef
+-	Monster	0	Character/NPC/Monster/Event/Harvester/Spirits Soul
+-	Monster	0	Character/NPC/Monster/Event/Harvester/Spirits Soul (BACKUP)
+-	Monster	0	Character/NPC/Monster/Event/Harvester/Spirits Soul (Harvested)
+Primary	Monster	0	Character/NPC/Monster/Event/October/Grim Gourdling/Grim Gourdling 1
+Primary	Monster	0	Character/NPC/Monster/Event/October/Grim Gourdling/Grim Gourdling 2
+Primary	Monster	0	Character/NPC/Monster/Event/October/Grim Gourdling/Grim Gourdling 3
+-	Monster	0	Character/NPC/Monster/Event/October/Grim Gourdling/Grim Scarab 1
+-	Monster	0	Character/NPC/Monster/Event/October/Grim Gourdling/Grim Scarab 2
+-	Monster	0	Character/NPC/Monster/Event/October/Grim Gourdling/Grim Scarab 3
+-	Monster	0	Character/NPC/Monster/Event/October/Grim Gourdling/Parts/Base
+None	Monster	0	Character/NPC/Monster/Event/October/Pumkin Bombie/Parts/Tier 1 (Base)
+None	Monster	0	Character/NPC/Monster/Event/October/Pumkin Bombie/Parts/Tier 2 (Base)
+None	Monster	0	Character/NPC/Monster/Event/October/Pumkin Bombie/Parts/Tier 3 (Base)
+Primary	Monster	0	Character/NPC/Monster/Event/October/Pumkin Bombie/Pumpkin Bombie 1
+Primary	Monster	0	Character/NPC/Monster/Event/October/Pumkin Bombie/Pumpkin Bombie 2
+Primary	Monster	0	Character/NPC/Monster/Event/October/Pumkin Bombie/Pumpkin Bombie 3
+Primary	Monster	0	Character/NPC/Monster/Event/October/Pumkin Zombie/Pumpkin Zombie 1
+Primary	Monster	0	Character/NPC/Monster/Event/October/Pumkin Zombie/Pumpkin Zombie 2
+Primary	Monster	0	Character/NPC/Monster/Event/October/Pumkin Zombie/Pumpkin Zombie 3
+-	Monster	0	Character/NPC/Monster/Event/October/Pumpkin King/Parts/Body
+-	Monster	0	Character/NPC/Monster/Event/October/Pumpkin King/Parts/Head (Trick)
+-	Monster	0	Character/NPC/Monster/Event/October/Pumpkin King/Pumpkin King
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Blarful/Blarful 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Blarful/Blarful 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Blarful/Blarful 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Blarful/Blarful Overtimer 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Blarful/Blarful Overtimer 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Blarful/Blarful Overtimer 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Devil-IT/Devil-IT 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Devil-IT/Devil-IT 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Devil-IT/Devil-IT 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Devil-IT/Devil-IT Overtimer 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Devil-IT/Devil-IT Overtimer 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Devil-IT/Devil-IT Overtimer 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Devilite/Devilite 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Devilite/Devilite 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Devilite/Devilite 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Devilite/Devilite Overtimer 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Devilite/Devilite Overtimer 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Devilite/Devilite Overtimer 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Firebrander/Firebrander 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Firebrander/Firebrander 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Firebrander/Firebrander 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Firebrander/Firebrander Overtimer 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Firebrander/Firebrander Overtimer 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Firebrander/Firebrander Overtimer 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Layoafer/Layoafer 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Layoafer/Layoafer 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Layoafer/Layoafer 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Layoafer/Layoafer Overtimer 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Layoafer/Layoafer Overtimer 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Layoafer/Layoafer Overtimer 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Parts/Blarful (Base)
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Parts/Blarful Overtimer (Base)
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Parts/Devil-IT (Base)
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Parts/Devil-IT Overtimer (Base)
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Parts/Devilite (Base)
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Parts/Devilite Overtimer (Base)
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Parts/Firebrander (Base)
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Parts/Firebrander Overtimer (Base)
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Parts/Layoafer (Base)
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Parts/Layoafer Overtimer (Base)
+-	Monster	0	Character/NPC/Monster/Fiend/Devilite/Parts/Pit Boss (Base)
+-	Monster	0	Character/NPC/Monster/Fiend/Devilite/Parts/Worker (Base)
+-	Monster	0	Character/NPC/Monster/Fiend/Devilite/Parts/Yesman (Base)
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Pit Boss/Pit Boss 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Pit Boss/Pit Boss 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Pit Boss/Pit Boss 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Yesman/Yesman 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Yesman/Yesman 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Devilite/Yesman/Yesman 3
+-	Monster	600	Character/NPC/Monster/Fiend/Gold Trojan/Gold Trojan
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Firegut/Firegut 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Firegut/Firegut 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Firegut/Firegut 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Gorgo/Gorgo 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Gorgo/Gorgo 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Gorgo/Gorgo 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Guster/Guster 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Guster/Guster 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Guster/Guster 3
+-	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Parts/Base
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Parts/Tier 1 (Base)
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Parts/Tier 2 (Base)
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Parts/Tier 3 (Base)
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Storm Belly/Storm Belly 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Storm Belly/Storm Belly 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Storm Belly/Storm Belly 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Waster/Waster 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Waster/Waster 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Gorgo/Waster/Waster 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Fire/Ruby Greaver 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Fire/Ruby Greaver 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Fire/Ruby Greaver 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Freeze/Pearl Greaver 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Freeze/Pearl Greaver 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Freeze/Pearl Greaver 3
+-	Monster	0	Character/NPC/Monster/Fiend/Greaver/Parts/Greaver (Base)
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Parts/Tier 1 (Base)
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Parts/Tier 2 (Base)
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Parts/Tier 3 (Base)
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Poison/Jade Greaver 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Poison/Jade Greaver 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Poison/Jade Greaver 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Shock/Beryl Greaver 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Shock/Beryl Greaver 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Shock/Beryl Greaver 3
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Vanilla/Greaver 1
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Vanilla/Greaver 2
+Primary	Monster	0	Character/NPC/Monster/Fiend/Greaver/Vanilla/Greaver 3
+-	Monster	0	Character/NPC/Monster/Fiend/Silkwing (TG)
+-	Monster	0	Character/NPC/Monster/Fiend/Silkwing/Silkwing 1
+-	Monster	0	Character/NPC/Monster/Fiend/Silkwing/Silkwing 2
+-	Monster	0	Character/NPC/Monster/Fiend/Silkwing/Silkwing 3
+-	Monster	0	Character/NPC/Monster/Fiend/Trojan/Trojan 1
+-	Monster	0	Character/NPC/Monster/Fiend/Trojan/Trojan 2
+-	Monster	0	Character/NPC/Monster/Fiend/Trojan/Trojan 3
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Darkfang Demo
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Darkfang Mender
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Darkfang Scorcher
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Darkfang Scorcher (tutorial)
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Darkfang Thwacker
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Ironclaw Demo
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Ironclaw Mender
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Ironclaw Scorcher
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Ironclaw Thwacker
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Choker/Choker 1
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Choker/Choker 2
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Choker/Choker 3
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Cooler/Cooler 1
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Cooler/Cooler 2
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Cooler/Cooler 3
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Jumper/Jumper 1
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Jumper/Jumper 2
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Jumper/Jumper 3
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Knocker/Knocker 1
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Knocker/Knocker 2
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Knocker/Knocker 3
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Lighter/Lighter 1
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Lighter/Lighter 2
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Lighter/Lighter 3
+-	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Parts/Knocker Base
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Parts/Tier 1
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Parts/Tier 2
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Knocker/Parts/Tier 3
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Blazing Mortafire/Blazing Mortafire 1
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Blazing Mortafire/Blazing Mortafire 2
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Blazing Mortafire/Blazing Mortafire 3
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Icy Mortafire/Icy Mortafire 1
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Icy Mortafire/Icy Mortafire 2
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Icy Mortafire/Icy Mortafire 3
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Mortafire/Mortafire 1
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Mortafire/Mortafire 2
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Mortafire/Mortafire 3
+-	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Parts/Mortafire Base
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Parts/Tier 1
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Parts/Tier 2
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Parts/Tier 3
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Static Mortafire/Static Mortafire 1
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Static Mortafire/Static Mortafire 2
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Static Mortafire/Static Mortafire 3
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Toxic Mortafire/Toxic Mortafire 1
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Toxic Mortafire/Toxic Mortafire 2
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Mortafire/Toxic Mortafire/Toxic Mortafire 3
+-	Monster	0	Character/NPC/Monster/Gremlin/Parts/Bubble Shield
+-	Monster	999999	Character/NPC/Monster/Gremlin/Parts/Dead Gremlin
+-	Monster	1	Character/NPC/Monster/Gremlin/Parts/Dead Player Marker
+-	Monster	0	Character/NPC/Monster/Gremlin/Parts/Gremlin Base
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Stalker/Ghostmane Stalker 1
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Stalker/Ghostmane Stalker 2
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Stalker/Ghostmane Stalker 3
+-	Monster	0	Character/NPC/Monster/Gremlin/Stalker/Parts/Stalker Base
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Tenderfoot Demo
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Tenderfoot Mender
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Tenderfoot Scorcher
+Primary	Monster	0	Character/NPC/Monster/Gremlin/Tenderfoot Thwacker
+-	Monster	115	Character/NPC/Monster/Slime/Baby Mimic/Baby Mimic 1
+-	Monster	115	Character/NPC/Monster/Slime/Baby Mimic/Parts/Baby Mimic
+Primary	Monster	115	Character/NPC/Monster/Slime/Blast Cube/Blast Cube 1
+Primary	Monster	115	Character/NPC/Monster/Slime/Blast Cube/Blast Cube 2
+Primary	Monster	115	Character/NPC/Monster/Slime/Blast Cube/Blast Cube 3
+-	Monster	0	Character/NPC/Monster/Slime/Companion Cube/Companion Cube 1
+-	Monster	0	Character/NPC/Monster/Slime/Companion Cube/Companion Cube 2
+-	Monster	0	Character/NPC/Monster/Slime/Companion Cube/Companion Cube 3
+-	Monster	0	Character/NPC/Monster/Slime/Companion Cube/Parts/Companion Cube (Base)
+-	Monster	0	Character/NPC/Monster/Slime/Giant Lichen Colony
+Primary	Monster	0	Character/NPC/Monster/Slime/Glop Drop/Germ Drop/Germ Drop 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Glop Drop/Germ Drop/Germ Drop 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Glop Drop/Germ Drop/Germ Drop 3
+Primary	Monster	0	Character/NPC/Monster/Slime/Glop Drop/Glop Drop/Glop Drop 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Glop Drop/Glop Drop/Glop Drop 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Glop Drop/Glop Drop/Glop Drop 3
+-	Monster	0	Character/NPC/Monster/Slime/Glop Drop/Parts/Base
+Primary	Monster	0	Character/NPC/Monster/Slime/Glop Drop/Power Drop/Power Drop 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Glop Drop/Power Drop/Power Drop 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Glop Drop/Power Drop/Power Drop 3
+Primary	Monster	0	Character/NPC/Monster/Slime/Glop Drop/Snow Drop/Snow Drop 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Glop Drop/Snow Drop/Snow Drop 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Glop Drop/Snow Drop/Snow Drop 3
+Primary	Monster	0	Character/NPC/Monster/Slime/Glop Drop/Spice Drop/Spice Drop 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Glop Drop/Spice Drop/Spice Drop 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Glop Drop/Spice Drop/Spice Drop 3
+Primary	Monster	115	Character/NPC/Monster/Slime/Ideal Jelly Cube
+Tutorial	Monster	115	Character/NPC/Monster/Slime/Jelly Cube (Intro)
+None	Monster	115	Character/NPC/Monster/Slime/Jelly Cube (No Loot)
+Tutorial	Monster	115	Character/NPC/Monster/Slime/Jelly Cube (TG)
+-	Monster	600	Character/NPC/Monster/Slime/Jelly Green Giant
+Primary	Monster	115	Character/NPC/Monster/Slime/Jelly Green Mini
+None	Monster	115	Character/NPC/Monster/Slime/Jelly Green Mini (No Loot)
+Primary	Monster	0	Character/NPC/Monster/Slime/Jelly/Ice Cube/Ice Cube 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Jelly/Ice Cube/Ice Cube 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Jelly/Ice Cube/Ice Cube 3
+Primary	Monster	115	Character/NPC/Monster/Slime/Jelly/Impostocube
+Primary	Monster	115	Character/NPC/Monster/Slime/Jelly/Jelly Cube/Jelly Cube 1
+Primary	Monster	115	Character/NPC/Monster/Slime/Jelly/Jelly Cube/Jelly Cube 2
+Primary	Monster	115	Character/NPC/Monster/Slime/Jelly/Jelly Cube/Jelly Cube 3
+Primary	Monster	0	Character/NPC/Monster/Slime/Jelly/Oiler, Poison/Oiler, Poison 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Jelly/Oiler, Poison/Oiler, Poison 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Jelly/Oiler, Poison/Oiler, Poison 3
+Primary	Monster	0	Character/NPC/Monster/Slime/Jelly/Oiler/Oiler 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Jelly/Oiler/Oiler 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Jelly/Oiler/Oiler 3
+-	Monster	0	Character/NPC/Monster/Slime/Jelly/Parts/Ice Cube (Base)
+-	Monster	0	Character/NPC/Monster/Slime/Jelly/Parts/Oiler (Base)
+-	Monster	0	Character/NPC/Monster/Slime/Jelly/Parts/Oiler, Poison (Base)
+-	Monster	0	Character/NPC/Monster/Slime/Jelly/Parts/Quicksilver (Base)
+Primary	Monster	0	Character/NPC/Monster/Slime/Jelly/Quicksilver/Quicksilver 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Jelly/Quicksilver/Quicksilver 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Jelly/Quicksilver/Quicksilver 3
+-	Monster	0	Character/NPC/Monster/Slime/Jelly/Soul Jelly
+Primary	Monster	0	Character/NPC/Monster/Slime/Jelly/Toxigel/Toxigel 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Jelly/Toxigel/Toxigel 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Jelly/Toxigel/Toxigel 3
+-	Monster	0	Character/NPC/Monster/Slime/Large Lichen Colony
+-	Monster	0	Character/NPC/Monster/Slime/Lichen Colony
+-	Monster	0	Character/NPC/Monster/Slime/Mimic/Chest or Mimic Spawn
+-	Monster	0	Character/NPC/Monster/Slime/Mimic/Mimic Spawn (No Chest)
+-	Monster	0	Character/NPC/Monster/Slime/Mimic/Parts/Mimic (Personality Base)
+-	Monster	0	Character/NPC/Monster/Slime/Mimic/Pieces/Chester
+-	Monster	0	Character/NPC/Monster/Slime/Mimic/Pieces/Eddie
+-	Monster	0	Character/NPC/Monster/Slime/Mimic/Pieces/Spawner Base
+-	Monster	0	Character/NPC/Monster/Slime/Mimic/Tentacle/Attack Tentacle
+-	Monster	0	Character/NPC/Monster/Slime/Mimic/Tentacle/Attack Tentacle, Junior
+-	Monster	0	Character/NPC/Monster/Slime/Mimic/Tentacle/Attack Tentacle, King
+-	Monster	0	Character/NPC/Monster/Slime/Mimic/Tentacle/Meat Shield
+-	Monster	0	Character/NPC/Monster/Slime/Mimic/Tentacle/Parts/Tentacle (Attack Base)
+-	Monster	0	Character/NPC/Monster/Slime/Mimic/Tentacle/Parts/Tentacle (Base)
+-	Monster	0	Character/NPC/Monster/Slime/Mimic/Tentacle/Weirdo Hello
+-	Monster	0	Character/NPC/Monster/Slime/Mimic/Tentacle/Weirdo Tentacle
+-	Monster	115	Character/NPC/Monster/Slime/Parts/Jelly Cube
+-	Monster	0	Character/NPC/Monster/Slime/Parts/Jelly Elemental
+None	Monster	115	Character/NPC/Monster/Slime/Parts/Jelly Green Mini (No Treasure)
+-	Monster	0	Character/NPC/Monster/Slime/Parts/Jelly Puck
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Caustic Polyp/Caustic Polyp 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Caustic Polyp/Caustic Polyp 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Caustic Polyp/Caustic Polyp 3
+-	Monster	0	Character/NPC/Monster/Slime/Polyp/Parts/Polyp (Base)
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Parts/Polyp 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Parts/Polyp 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Parts/Polyp 3
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Polar Polyp/Polar Polyp 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Polar Polyp/Polar Polyp 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Polar Polyp/Polar Polyp 3
+-	Monster	0	Character/NPC/Monster/Slime/Polyp/Polyp, Poison-Fire/Parts/Polyp (Base)
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Polyp, Poison-Fire/Polyp, Poison-Fire 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Polyp, Poison-Fire/Polyp, Poison-Fire 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Polyp, Poison-Fire/Polyp, Poison-Fire 3
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Polyp/Polyp 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Polyp/Polyp 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Polyp/Polyp 3
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Silver Polyp/Silver Polyp 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Silver Polyp/Silver Polyp 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Silver Polyp/Silver Polyp 3
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Slick Polyp/Slick Polyp 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Slick Polyp/Slick Polyp 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Polyp/Slick Polyp/Slick Polyp 3
+Primary	Monster	115	Character/NPC/Monster/Slime/Rock Jelly/Rock Jelly 1
+None	Monster	115	Character/NPC/Monster/Slime/Rock Jelly/Rock Jelly 1 (No-Loot)
+Primary	Monster	115	Character/NPC/Monster/Slime/Rock Jelly/Rock Jelly 2
+None	Monster	115	Character/NPC/Monster/Slime/Rock Jelly/Rock Jelly 2 (No-Loot)
+Primary	Monster	115	Character/NPC/Monster/Slime/Rock Jelly/Rock Jelly 3
+None	Monster	115	Character/NPC/Monster/Slime/Rock Jelly/Rock Jelly 3 (No-Loot)
+Primary	Monster	0	Character/NPC/Monster/Slime/Sloom/Sloom 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Sloom/Sloom 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Sloom/Sloom 3
+Primary	Monster	0	Character/NPC/Monster/Slime/Sloombargo/Sloombargo 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Sloombargo/Sloombargo 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Sloombargo/Sloombargo 3
+-	Monster	0	Character/NPC/Monster/Slime/Toxilargo, Fire/Parts/Toxilargo, Fire (Base)
+Primary	Monster	0	Character/NPC/Monster/Slime/Toxilargo, Fire/Toxilargo, Fire 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Toxilargo, Fire/Toxilargo, Fire 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Toxilargo, Fire/Toxilargo, Fire 3
+Primary	Monster	0	Character/NPC/Monster/Slime/Toxilargo/Toxilargo 1
+Primary	Monster	0	Character/NPC/Monster/Slime/Toxilargo/Toxilargo 2
+Primary	Monster	0	Character/NPC/Monster/Slime/Toxilargo/Toxilargo 3
+-	Monster	125	Character/NPC/Monster/Undead/Barlok
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Bombie/Bombie 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Bombie/Bombie 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Bombie/Bombie 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Fire Bombie/Fire Bombie 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Fire Bombie/Fire Bombie 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Fire Bombie/Fire Bombie 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Freeze Bombie/Freeze Bombie 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Freeze Bombie/Freeze Bombie 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Freeze Bombie/Freeze Bombie 3
+-	Monster	0	Character/NPC/Monster/Undead/Bombie/Parts/Bombie (Base)
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Parts/Tier 1 (Base)
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Parts/Tier 2 (Base)
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Parts/Tier 3 (Base)
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Poison Bombie/Poison Bombie 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Poison Bombie/Poison Bombie 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Poison Bombie/Poison Bombie 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Shock Bombie/Shock Bombie 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Shock Bombie/Shock Bombie 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Bombie/Shock Bombie/Shock Bombie 3
+Health Only	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Almire Knight/Almire Knight
+Health Only	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Almire Knight/Almire Knight, Curse
+-	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Beast Master (Base)
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Beast Master, 2 orbits
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Beast Master, 3 orbits
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Beast Master, no orbits
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Deadnaught/Deadnought 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Deadnaught/Deadnought 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Deadnaught/Deadnought 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Dreadnaught/Dreadnought 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Dreadnaught/Dreadnought 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Dreadnaught/Dreadnought 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Fire Deadnaught/Fire Deadnought 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Fire Deadnaught/Fire Deadnought 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Fire Deadnaught/Fire Deadnought 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Freeze Deadnaught/Freeze Deadnought 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Freeze Deadnaught/Freeze Deadnought 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Freeze Deadnaught/Freeze Deadnought 3
+-	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Parts/Deadnought (Base)
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Parts/Tier 1 (Base)
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Parts/Tier 2 (Base)
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Parts/Tier 3 (Base)
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Poison Deadnaught/Poison Deadnought 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Poison Deadnaught/Poison Deadnought 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Poison Deadnaught/Poison Deadnought 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Shock Deadnaught/Shock Deadnought 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Shock Deadnaught/Shock Deadnought 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Shock Deadnaught/Shock Deadnought 3
+Health Only	Monster	0	Character/NPC/Monster/Undead/Deadnaught/Slag Guard (2)
+-	Monster	0	Character/NPC/Monster/Undead/Deadnought
+-	Monster	125	Character/NPC/Monster/Undead/Dybbuk
+Primary	Monster	0	Character/NPC/Monster/Undead/Grave Scarab/Grave Scarab/Grave Scarab 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Grave Scarab/Grave Scarab/Grave Scarab 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Grave Scarab/Grave Scarab/Grave Scarab 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Grave Scarab/Pale Scarab/Pale Scarab 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Grave Scarab/Pale Scarab/Pale Scarab 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Grave Scarab/Pale Scarab/Pale Scarab 3
+-	Monster	0	Character/NPC/Monster/Undead/Grave Scarab/Parts/Base
+Primary	Monster	0	Character/NPC/Monster/Undead/Grave Scarab/Plague Scarab/Plague Scarab 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Grave Scarab/Plague Scarab/Plague Scarab 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Grave Scarab/Plague Scarab/Plague Scarab 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Grave Scarab/Silver Scarab/Silver Scarab 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Grave Scarab/Silver Scarab/Silver Scarab 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Grave Scarab/Silver Scarab/Silver Scarab 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Grave Scarab/Sun Scarab/Sun Scarab 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Grave Scarab/Sun Scarab/Sun Scarab 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Grave Scarab/Sun Scarab/Sun Scarab 3
+-	Monster	0	Character/NPC/Monster/Undead/Grimalkin/Parts/Grimalkin Stalker
+Primary	Monster	0	Character/NPC/Monster/Undead/Howlizter/Chilling Howlitzer/Chilling Howlitzer 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Howlizter/Chilling Howlitzer/Chilling Howlitzer 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Howlizter/Chilling Howlitzer/Chilling Howlitzer 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Howlizter/Howlizter/Howlizter 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Howlizter/Howlizter/Howlizter 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Howlizter/Howlizter/Howlizter 3
+-	Monster	0	Character/NPC/Monster/Undead/Howlizter/Parts/Howlizter (Base)
+-	Monster	0	Character/NPC/Monster/Undead/Howlizter/Parts/Revenge Head
+Primary	Monster	0	Character/NPC/Monster/Undead/Howlizter/Shocking Howlitzer/Shocking Howlitzer 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Howlizter/Shocking Howlitzer/Shocking Howlitzer 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Howlizter/Shocking Howlitzer/Shocking Howlitzer 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Howlizter/Smoking Howlitzer/Smoking Howlitzer 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Howlizter/Smoking Howlitzer/Smoking Howlitzer 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Howlizter/Smoking Howlitzer/Smoking Howlitzer 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Howlizter/Vile Howlitzer/Vile Howlitzer 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Howlizter/Vile Howlitzer/Vile Howlitzer 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Howlizter/Vile Howlitzer/Vile Howlitzer 3
+-	Monster	0	Character/NPC/Monster/Undead/NPC/Spookat (Summoned Pet)
+-	Monster	0	Character/NPC/Monster/Undead/Parts/Zombie (Base)
+-	Monster	0	Character/NPC/Monster/Undead/Phantom/Parts/Phantom
+-	Monster	0	Character/NPC/Monster/Undead/Slag Guard
+-	Monster	0	Character/NPC/Monster/Undead/Soldier/Parts/Base
+Primary	Monster	0	Character/NPC/Monster/Undead/Soldier/Soldier of Almire/Soldier of Almire
+Primary	Monster	0	Character/NPC/Monster/Undead/Spookat/Black Kat/Black Kat 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Spookat/Black Kat/Black Kat 3
+-	Monster	0	Character/NPC/Monster/Undead/Spookat/Black Kat/Parts/Base
+Primary	Monster	0	Character/NPC/Monster/Undead/Spookat/Bloogato/Bloogato 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Spookat/Bloogato/Bloogato 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Spookat/Bloogato/Bloogato 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Spookat/Hurkat/Hurkat 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Spookat/Hurkat/Hurkat 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Spookat/Hurkat/Hurkat 3
+-	Monster	0	Character/NPC/Monster/Undead/Spookat/Mewkat
+-	Monster	0	Character/NPC/Monster/Undead/Spookat/Parts/Tier 1 (Base)
+-	Monster	0	Character/NPC/Monster/Undead/Spookat/Parts/Tier 2 (Base)
+-	Monster	0	Character/NPC/Monster/Undead/Spookat/Parts/Tier 3 (Base)
+Primary	Monster	0	Character/NPC/Monster/Undead/Spookat/Pepper Kat/Pepper Kat 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Spookat/Pepper Kat/Pepper Kat 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Spookat/Pepper Kat/Pepper Kat 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Spookat/Spookat/Spookat 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Spookat/Spookat/Spookat 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Spookat/Spookat/Spookat 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Spookat/Statikat/Statikat 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Spookat/Statikat/Statikat 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Spookat/Statikat/Statikat 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Carnavon/Carnavon 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Carnavon/Carnavon 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Carnavon/Carnavon 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Droul/Droul 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Droul/Droul 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Droul/Droul 3
+Tutorial	Monster	0	Character/NPC/Monster/Undead/Zombie/Dust Zombie (TG)
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Dust Zombie/Dust Zombie 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Dust Zombie/Dust Zombie 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Dust Zombie/Dust Zombie 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Frankenzom/Frankenzom 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Frankenzom/Frankenzom 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Frankenzom/Frankenzom 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Frozen Shamber/Frozen Shamber 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Frozen Shamber/Frozen Shamber 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Frozen Shamber/Frozen Shamber 3
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Parts/Tier 1 (Base)
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Parts/Tier 2 (Base)
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Parts/Tier 3 (Base)
+-	Monster	0	Character/NPC/Monster/Undead/Zombie/Parts/Zombie (Base)
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Slag Walker/Slag Walker 1
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Slag Walker/Slag Walker 2
+Primary	Monster	0	Character/NPC/Monster/Undead/Zombie/Slag Walker/Slag Walker 3
+None	Monster	0	Character/NPC/Winterfest/Grinchlins/Scorcher/Grinchlin Scorcher
+Primary	Monster	0	Character/NPC/Winterfest/Grinchlins/Stalker/Grinchlin Stalker
+-	Monster	0	Character/NPC/Winterfest/Grinchlins/Stalker/Parts/Stalker Base
+None	Monster	0	Character/NPC/Winterfest/Grinchlins/Thwacker/Grinchlin Thwacker
+-	Monster	0	Character/NPC/Winterfest/Grinchlins/Thwacker/Parts/Grinchlin Base
+Primary	Monster	0	Character/NPC/Winterfest/HumBug/Humbug
+-	Monster	0	Character/NPC/Winterfest/HumBug/Parts/Humbug (Base)
+None	Monster	0	Character/NPC/Winterfest/HumBug/Parts/Tier 2 (Base)
+-	Monster	0	Character/NPC/Winterfest/Impostoclaus, Dungeon
+-	Monster	0	Character/Scripted/Knight/Haven/Box Drop Off/Knight, Box Carrier (Rare)
+-	Monster	0	Character/Scripted/Knight/Haven/Box Drop Off/Knight, Box Carrier 1
+-	Monster	0	Character/Scripted/Knight/Haven/Box Drop Off/Knight, Box Carrier 2
+-	Monster	0	Character/Scripted/Knight/Haven/Box Drop Off/Knight, Box Carrier 3
+-	Monster	0	Character/Scripted/Knight/Haven/Box Drop Off/Parts/Base
+-	Monster	0	Character/Scripted/Knight/Haven/Event/Biscotti, Walk
+-	Monster	0	Character/Scripted/Knight/Haven/Event/Knight, Walk Follow 1
+-	Monster	0	Character/Scripted/Knight/Haven/Event/Knight, Walk Follow 2
+-	Monster	0	Character/Scripted/Knight/Haven/Event/Knight, Walk Follow 3
+-	Monster	0	Character/Scripted/Knight/Haven/Event/Parts/Base, Biscotti
+-	Monster	0	Character/Scripted/Knight/Haven/Event/Parts/Base, Follow
+-	Monster	0	Character/Scripted/Knight/Haven/Minderal Drop Off/Knight, Mineral Carrier (Rare)
+-	Monster	0	Character/Scripted/Knight/Haven/Minderal Drop Off/Knight, Mineral Carrier 1
+-	Monster	0	Character/Scripted/Knight/Haven/Minderal Drop Off/Knight, Mineral Carrier 2
+-	Monster	0	Character/Scripted/Knight/Haven/Minderal Drop Off/Knight, Mineral Carrier 3
+-	Monster	0	Character/Scripted/Knight/Haven/Minderal Drop Off/Parts/Base
+-	Monster	0	Character/Scripted/Knight/Haven/Report to Officer/Knight, Salute Officer 1
+-	Monster	0	Character/Scripted/Knight/Haven/Report to Officer/Knight, Salute Officer 2
+-	Monster	0	Character/Scripted/Knight/Haven/Report to Officer/Knight, Salute Officer 3
+-	Monster	0	Character/Scripted/Knight/Haven/Report to Officer/Parts/Base
+-	Monster	0	Character/Scripted/Knight/Haven/Walk About/Knight, Walk About
+-	Monster	0	Character/Scripted/Knight/Haven/Walk About/Knight, Walk Follow 1
+-	Monster	0	Character/Scripted/Knight/Haven/Walk About/Knight, Walk Follow 2
+-	Monster	0	Character/Scripted/Knight/Haven/Walk About/Knight, Walk Follow 3
+-	Monster	0	Character/Scripted/Knight/Haven/Walk About/Parts/Base
+-	Monster	0	Character/Scripted/Knight/Haven/Walk About/Parts/Base, Follow
+-	Monster	0	Character/Scripted/Knight/Haven/Walk About/Parts/Base, Follow (Self Terminate)
+-	Monster	0	Character/Scripted/Knight/Parts/Base
+-	Monster	0	Character/Scripted/Knight/Parts/Base, Follow
+-	Monster	0	Character/Scripted/Missions/Generic/Knight, Gunner
+-	Monster	0	Character/Scripted/Missions/Rank/04/4.2/Herex, Intro Conversation
+-	Monster	0	Character/Scripted/Missions/Rank/04/4.3/Sputterspark, Conversation
+-	Monster	0	Character/Scripted/Missions/Rank/05/5.1/Herex, RJP Conversation
+-	Monster	0	Character/Scripted/Missions/Rank/08/8.2/Sputterspark, Great Escape
+-	Monster	0	Character/Scripted/Missions/Rank/09/9.1/Arkus, Approach
+-	Monster	0	Character/Scripted/Missions/Rank/09/9.1/Arkus, Battle Intro
+-	Monster	0	Character/Scripted/Missions/Rank/10/10.2/Herex, Core Intro
+-	Monster	0	Character/Scripted/Missions/Rank/10/10.2/Herex, Intro
+-	Monster	1000000	Character/Scripted/Missions/Rank/10/10.2/Parma Battle Sprite
+-	Monster	0	Character/Scripted/Missions/Tutorial/Ancient Generator/Mini Boss/Scorcher, Intro Conversation
+-	Monster	0	Character/Scripted/Missions/Tutorial/Ancient Generator/Mini Boss/Scorcher, Outro Conversation
+-	Monster	1000000	Character/Scripted/Missions/Tutorial/Crashsite/Mini Boss/Knights/Base
+-	Monster	1000000	Character/Scripted/Missions/Tutorial/Crashsite/Mini Boss/Knights/Bygs
+-	Monster	1	Character/Scripted/Missions/Tutorial/Crashsite/Mini Boss/Knights/Parts/Bomber Marker
+-	Monster	1000000	Character/Scripted/Missions/Tutorial/Crashsite/Mini Boss/Knights/Warden
+-	Monster	1000000	Character/Scripted/Missions/Tutorial/Crashsite/Mini Boss/Knights/Wend
+-	Monster	0	Character/Scripted/Missions/Tutorial/Final Test/Knight Squad/Feron
+-	Monster	0	Character/Scripted/Missions/Tutorial/Final Test/Knight Squad/Spiral Knight
+-	Monster	0	Character/Scripted/Missions/Tutorial/Final Test/Mini Boss/Battle/Scorcher, Battle Conversation
+-	Monster	0	Character/Scripted/Missions/Tutorial/Final Test/Mini Boss/Intro/Rendon, Intro Conversation
+-	Monster	0	Character/Scripted/Missions/Tutorial/Final Test/Mini Boss/Intro/Rendon, Intro Throw
+-	Monster	0	Character/Scripted/Missions/Tutorial/Final Test/Mini Boss/Intro/Scorcher, Intro Conversation
+-	Monster	0	Character/Scripted/Monster/Gremlin/Parts/Base
+-	Monster	1	Character/Weapon/Hunting Wolver
+-	Monster	100	Dynamic/Energy-Consuming Objects/Crates/Parts/Turret, Auto (base)
+-	Monster	800	Dynamic/Energy-Consuming Objects/Crates/Parts/Turret, Auto - Vulcan
+-	Monster	0	Dynamic/Energy-Consuming Objects/Crates/Turret, Auto - Railgun/Parts/Turret, Auto - Railgun
+-	Monster	0	Dynamic/Energy-Consuming Objects/Crates/Turret, Auto - Railgun/Parts/Turret, Auto - Railgun, rescue camp
+-	Monster	0	Dynamic/Energy-Consuming Objects/Crates/Turret, Auto - Railgun/Railgun
+-	Monster	0	Dynamic/Energy-Consuming Objects/Crates/Turret, Auto - Railgun/Railgun (Spiral Order)
+-	Monster	0	Dynamic/Energy-Consuming Objects/Crates/Turret, Auto - Railgun/Railgun (Spiral Order) rescue camp
+-	Monster	0	Dynamic/Energy-Consuming Objects/Crates/Turret, Auto - Railgun/Railgun (Team PvP)
+-	Monster	0	Dynamic/Furni/Pet/Chromalisk, Scaredy
+-	Monster	0	Dynamic/Furni/Pet/Companion Cube
+-	Monster	0	Dynamic/Traps and Hazards/Avalanche Wheel/Icy Wheel Launcher
+-	Monster	0	Dynamic/Traps and Hazards/Siege Wheel/Wheel Launcher
+-	Monster	0	Dynamic/Traps and Hazards/Siege Wheel/Wheel Launcher, Icy
+-	Monster	9999	Dynamic/Traps and Hazards/Whitespace/Void Turret
+-	Monster	0	Static/Stateful Props/Factory/Conveyor Belts/Scrap Parts - Mechaknights
+-	Monster	0	Static/Stateful Props/Factory/Conveyor Belts/Scrap Parts - Mechaknights (2)
