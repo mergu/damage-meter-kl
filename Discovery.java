@@ -328,9 +328,13 @@ class Discovery {
             }
         }).getName();
 
-        // the sprite's remove(int) gets hooked, and reads the sprite's view
-        pool.get(d.spriteClass).getMethod("remove", "(I)V");
-        pool.get(d.spriteClass).getField("_view");
+        // a head's removal time is the timestamp of the scene update that dropped it
+        declared(hierarchy(pool.get(d.sceneViewClass)), "_records", d.sceneViewClass);
+        boolean stamped = false;
+        for (CtClass nested : pool.get(d.sceneViewClass).getNestedClasses()) {
+            if (declares(nested, "_timestamp")) stamped = true;
+        }
+        if (!stamped) throw new RuntimeException("Cannot resolve the update records' _timestamp in " + d.sceneViewClass);
         declared(actorCt, "_created");
 
         d.actorWhereMethod = uniqueMethod("actorWhereMethod", actorCt, m -> {

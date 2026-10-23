@@ -69,7 +69,7 @@ cat > mod.json << EOF
 {
   "mod": {
     "name": "Damage Meter",
-    "description": "Left click changes the stat. Right click swaps between the current/last floor or whole run. Drag to move.",
+    "description": "Left click changes the stat. Right click swaps between the current/last floor or whole run. Drag to move. The corner buttons reset the run or hide the meter.",
     "author": "Mergu",
     "version": "1.0.0",
     "type": "class",

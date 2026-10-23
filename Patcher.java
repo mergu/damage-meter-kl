@@ -39,6 +39,10 @@ public class Patcher {
     static final String DEBUG_INDENT = "      ";
 
     static final int ICON = LINE - 2;
+    // the reset and hide buttons sit in the header's right end, one cell each
+    static final int BOX = LINE;
+    // what's left showing when the meter is hidden
+    static final int TAB = BOX + PAD * 2;
     static final String QUIET = "90000L";
     static final String HANDOVER = "4000L";
     static final int MUCH_MIN = 48;
@@ -106,6 +110,9 @@ public class Patcher {
     }
 
     static final String INDEX_SLICE = "400";
+    // no single hit counts above this: the game's fixed "kill it" damage is 99,999 and up
+    // (railgun auto-turrets do 999,999), and real hits stay in the thousands
+    static final long MAX_HIT = 10000L;
     static final int KEPT_RUNS = 6;
 
     public static void main(String[] args) throws Exception {
@@ -142,11 +149,9 @@ public class Patcher {
 
         CtClass dirCt = pool.get(d.dirBaseClass);
         hookDirector(d, dirCt);
-        CtClass spriteCt = pool.get(d.spriteClass);
-        hookSprite(spriteCt);
 
         CtClass[] toWrite = {tallyCt, runCt, barCt, mainCt, rowCt, mouseCt, meterCt, watchCt,
-            dirCt, spriteCt};
+            dirCt};
         for (CtClass c : toWrite) {
             c.writeFile(OUT_DIR);
         }
@@ -409,7 +414,11 @@ public class Patcher {
         c.addField(CtField.make("public static java.lang.ref.WeakReference scannedIn = null;", c));
         c.addField(CtField.make("public static java.lang.reflect.Field fCreated = null;", c));
         c.addField(CtField.make("public static java.lang.reflect.Field fModel = null;", c));
-        c.addField(CtField.make("public static java.lang.reflect.Field fView = null;", c));
+        c.addField(CtField.make("public static java.lang.reflect.Field fRecords = null;", c));
+        c.addField(CtField.make("public static java.lang.reflect.Field fStamp = null;", c));
+        // zombie heads in sight, id -> sprite, so we notice when one goes
+        c.addField(CtField.make("public static java.util.HashMap heads = new java.util.HashMap();", c));
+        c.addField(CtField.make("public static java.lang.ref.WeakReference headsSeenIn = null;", c));
         c.addField(CtField.make("public static java.lang.reflect.Field fSprites = null;", c));
         c.addField(CtField.make("public static java.lang.reflect.Field fAmount = null;", c));
         c.addField(CtField.make("public static java.lang.reflect.Field fVictim = null;", c));
@@ -448,12 +457,19 @@ public class Patcher {
         c.addField(CtField.make("public static Object NONE = new Object();", c));
         c.addField(CtField.make("public static java.util.HashMap tints = new java.util.HashMap();", c));
         c.addField(CtField.make("public static long strayed = 0L;", c));
+        c.addField(CtField.make("public static int dropped = 0;", c));
+        c.addField(CtField.make("public static String droppedNote = null;", c));
+        c.addField(CtField.make("public static java.lang.reflect.Field fWindows = null;", c));
+        c.addField(CtField.make("public static java.lang.reflect.Field fHover = null;", c));
+        c.addField(CtField.make("public static java.lang.reflect.Method mHover = null;", c));
+        c.addField(CtField.make("public static java.lang.reflect.Method mWindowOf = null;", c));
         c.addField(CtField.make("public static long LIVE = 10000L;", c));
         c.addField(CtField.make("public static java.util.HashMap standing = new java.util.HashMap();", c));
         c.addField(CtField.make("public static boolean loaded = false;", c));
         c.addField(CtField.make("public static long parted = 0L;", c));
         c.addField(CtField.make("public static int taken_in = 0;", c));
         c.addField(CtField.make("public static int written = 0;", c));
+        c.addField(CtField.make("public static boolean hidden = false;", c));
 
         c.addMethod(CtNewMethod.make(
             "public static Object findView(Object from, int depth) {" +
@@ -601,12 +617,18 @@ public class Patcher {
             "  } catch (Throwable t) { return null; }" +
             "}", c));
 
+        // the timestamp of the last scene update applied, which is what the view hands
+        // to the sprites it removes in that update
         c.addMethod(CtNewMethod.make(
-            "public static Object viewOf(Object sprite) {" +
+            "public static int lastStamp(Object view) {" +
             "  try {" +
-            "    if (fView == null) { fView = grab(sprite.getClass(), \"_view\"); }" +
-            "    return fView.get(sprite);" +
-            "  } catch (Throwable t) { return null; }" +
+            "    if (fRecords == null) { fRecords = grab(view.getClass(), \"_records\"); }" +
+            "    java.util.List kept = (java.util.List) fRecords.get(view);" +
+            "    if (kept == null || kept.isEmpty()) { return 0; }" +
+            "    Object last = kept.get(kept.size() - 1);" +
+            "    if (fStamp == null) { fStamp = grab(last.getClass(), \"_timestamp\"); }" +
+            "    return fStamp.getInt(last);" +
+            "  } catch (Throwable t) { return 0; }" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
@@ -733,16 +755,16 @@ public class Patcher {
             "  }" +
             "}", c));
 
-        // the zombie a totem raises shows up just before its head's removal does
+        // the zombie a totem raises shows up in the same scene update that removes its head,
+        // or one shortly before
         c.addMethod(CtNewMethod.make(
-            "public static void headGone(Object sprite, int gone) {" +
+            "public static void headGone(Object view, Object sprite, int gone) {" +
             "  if (!wantRevived && !debug) { return; }" +
             "  try {" +
             "    Object actor = ((" + d.spriteClass + ") sprite)." + d.spriteActorMethod + "();" +
             "    if (actor == null) { return; }" +
             "    Object ref = ((" + Discovery.ACTOR + ") actor)." + d.actorRefMethod + "();" +
             "    if (ref == null || !\"" + Discovery.ZOMBIE_HEAD + "\".equals(((" + Discovery.CONFIG_REF + ") ref).getName())) { return; }" +
-            "    Object view = viewOf(sprite);" +
             "    java.util.Map sprites = view == null ? null : spritesOf(view);" +
             "    if (sprites == null) { return; }" +
             "    if (headsIn == null || headsIn.get() != view) {" +
@@ -793,6 +815,49 @@ public class Patcher {
             "    }" +
             "    goneHeads.add(head);" +
             "    if (goneHeads.size() > 64) { goneHeads.remove(0); }" +
+            "  } catch (Throwable t) { }" +
+            "}", c));
+
+        // every beat: note the zombie heads in sight
+        c.addMethod(CtNewMethod.make(
+            "public static void findHeads() {" +
+            "  if (!wantRevived && !debug) { return; }" +
+            "  try {" +
+            "    Object view = seen();" +
+            "    java.util.Map sprites = view == null ? null : spritesOf(view);" +
+            "    if (sprites == null) { return; }" +
+            "    if (headsSeenIn == null || headsSeenIn.get() != view) {" +
+            "      headsSeenIn = new java.lang.ref.WeakReference(view);" +
+            "      heads.clear();" +
+            "    }" +
+            "    java.util.Iterator it = sprites.entrySet().iterator();" +
+            "    while (it.hasNext()) {" +
+            "      java.util.Map$Entry e = (java.util.Map$Entry) it.next();" +
+            "      if (e.getValue() == null || heads.containsKey(e.getKey())) { continue; }" +
+            "      Object actor = ((" + d.spriteClass + ") e.getValue())." + d.spriteActorMethod + "();" +
+            "      Object ref = actor == null ? null : ((" + Discovery.ACTOR + ") actor)." + d.actorRefMethod + "();" +
+            "      if (ref != null && \"" + Discovery.ZOMBIE_HEAD + "\".equals(((" + Discovery.CONFIG_REF + ") ref).getName())) {" +
+            "        heads.put(e.getKey(), e.getValue());" +
+            "      }" +
+            "    }" +
+            "  } catch (Throwable t) { }" +
+            "}", c));
+
+        // every frame: a known head whose sprite has left the view was just removed
+        c.addMethod(CtNewMethod.make(
+            "public static void watchHeads() {" +
+            "  if (heads.isEmpty()) { return; }" +
+            "  try {" +
+            "    Object view = headsSeenIn == null ? null : headsSeenIn.get();" +
+            "    java.util.Map sprites = view == null ? null : spritesOf(view);" +
+            "    if (sprites == null) { heads.clear(); return; }" +
+            "    java.util.Iterator it = heads.entrySet().iterator();" +
+            "    while (it.hasNext()) {" +
+            "      java.util.Map$Entry e = (java.util.Map$Entry) it.next();" +
+            "      if (sprites.get(e.getKey()) == e.getValue()) { continue; }" +
+            "      it.remove();" +
+            "      headGone(view, e.getValue(), lastStamp(view));" +
+            "    }" +
             "  } catch (Throwable t) { }" +
             "}", c));
 
@@ -986,8 +1051,17 @@ public class Patcher {
             "    long real = packed ? ((long) (amount >> 20)) : ((long) amount);" +
             "    if (real <= 0L) { return; }" +
             "    if (!hit) { return; }" +
-            "    long when = System.currentTimeMillis();" +
             "    String by = nameOf(source);" +
+            // the game kills things outright with fixed hits of 99,999 and up (railgun
+            // auto-turrets do 999,999 to whatever they target); that is not damage anyone dealt
+            "    if (real > " + MAX_HIT + "L) {" +
+            "      dropped = dropped + 1;" +
+            "      worthCounting(victim);" +
+            "      droppedNote = (by != null ? by : \"#\" + source) + \" \" + real" +
+            "          + \" on \" + (hurt != null ? hurt : (seenPath != null ? seenPath : \"#\" + victim));" +
+            "      return;" +
+            "    }" +
+            "    long when = System.currentTimeMillis();" +
             "    if (onPlayer) {" +
             "      keep(1, hurt, packed ? ((long) pips(amount)) : real, when);" +
             "    } else if (packed) {" +
@@ -1831,6 +1905,10 @@ public class Patcher {
             "          ? \"unnamed\" : called)" +
             "          + (level.floorType == null ? \"\" : \"  \" + level.floorType));" +
             "    }" +
+            "    if (dropped > 0) {" +
+            "      wrapInto(out, \"dropped  \", dropped + \" hit\" + (dropped == 1 ? \"\" : \"s\")" +
+            "          + \" over " + MAX_HIT + " not counted, last: \" + droppedNote);" +
+            "    }" +
             "    if (debugPage == 4) { timelineLines(out); return out; }" +
             "    int lone = 0;" +
             "    int h = 0;" +
@@ -1988,7 +2066,7 @@ public class Patcher {
             "  while (it.hasNext()) {" +
             "    java.util.Map$Entry e = (java.util.Map$Entry) it.next();" +
             "    " + RUN + " held = (" + RUN + ") e.getValue();" +
-            "    if (held.isEmpty()) { continue; }" +
+            "    if (held.isEmpty() && !held.kept) { continue; }" +
             "    boolean shares = false;" +
             "    if (been != null) {" +
             "      java.util.Iterator walk = been.iterator();" +
@@ -2087,6 +2165,8 @@ public class Patcher {
         c.addField(CtField.make("public String mark = \"\";", c));
         c.addField(CtField.make("public int deepest = 0;", c));
         c.addField(CtField.make("public long when = 0L;", c));
+        // wiped with the reset button: still the live run, though empty
+        c.addField(CtField.make("public boolean kept = false;", c));
         c.addField(CtField.make(
             "public java.util.HashSet crew = new java.util.HashSet();", c));
         c.addField(CtField.make(
@@ -2138,6 +2218,7 @@ public class Patcher {
             "  out.setProperty(prefix + \".mark\", this.mark);" +
             "  out.setProperty(prefix + \".deepest\", String.valueOf(this.deepest));" +
             "  out.setProperty(prefix + \".when\", String.valueOf(this.when));" +
+            "  out.setProperty(prefix + \".kept\", this.kept ? \"1\" : \"0\");" +
             "  StringBuffer names = new StringBuffer();" +
             "  java.util.Iterator it = this.crew.iterator();" +
             "  while (it.hasNext()) {" +
@@ -2180,6 +2261,7 @@ public class Patcher {
             "  catch (Throwable t) { this.deepest = 0; }" +
             "  try { this.when = Long.parseLong(in.getProperty(prefix + \".when\", \"0\")); }" +
             "  catch (Throwable t) { this.when = 0L; }" +
+            "  this.kept = \"1\".equals(in.getProperty(prefix + \".kept\", \"0\"));" +
             "  this.crew.clear();" +
             "  String had = in.getProperty(prefix + \".crew\", \"\");" +
             "  if (had.length() > 0) {" +
@@ -2427,6 +2509,15 @@ public class Patcher {
             "public void mouseClicked(" + Discovery.MOUSE_EVENT + " e) {" +
             "  e.consume();" +
             "  if (this.moved) { return; }" +
+            "  int icon = this.meter.iconAt(e.getX() - this.meter.getAbsoluteX()," +
+            "      e.getY() - this.meter.getAbsoluteY());" +
+            "  if (icon == 3 || icon != 0 && e.getButton() == 0) {" +
+            "    if (icon == 1) { " + MAIN + ".reset(); }" +
+            "    else { " + MAIN + ".hide(icon == 2); }" +
+            "    this.meter.refresh();" +
+            "    this.meter.resize();" +
+            "    return;" +
+            "  }" +
             "  if (e.getButton() == 1) { " + MAIN + ".cycleSegment(); }" +
             "  else if (e.getButton() == 2) {" +
             "    " + MAIN + ".debugPage = (" + MAIN + ".debugPage + 1) % " + DEBUG_PAGES + ";" +
@@ -2490,6 +2581,7 @@ public class Patcher {
             "    out.setProperty(\"window.placed\", " + METER + ".keptPlaced ? \"1\" : \"0\");" +
             "    out.setProperty(\"mode\", String.valueOf(mode));" +
             "    out.setProperty(\"debug\", String.valueOf(debugPage));" +
+            "    out.setProperty(\"hidden\", hidden ? \"1\" : \"0\");" +
             "    StringBuffer names = new StringBuffer();" +
             "    java.util.Iterator it = runs.entrySet().iterator();" +
             "    while (it.hasNext()) {" +
@@ -2515,6 +2607,27 @@ public class Patcher {
             "  } catch (Throwable t) { }" +
             "}", c));
 
+        // wipes the floor, last floor and run of the party we're in, whichever is showing
+        c.addMethod(CtNewMethod.make(
+            "public static void reset() {" +
+            "  floorBook.clear();" +
+            "  lastBook.clear();" +
+            "  runBook.clear();" +
+            "  current.kept = true;" +
+            "  strayed = 0L;" +
+            "  dropped = 0;" +
+            "  droppedNote = null;" +
+            "  lastHits.clear();" +
+            "  taken_in = taken_in + 1;" +
+            "  store();" +
+            "}", c));
+
+        c.addMethod(CtNewMethod.make(
+            "public static void hide(boolean on) {" +
+            "  hidden = on;" +
+            "  store();" +
+            "}", c));
+
         c.addMethod(CtNewMethod.make(
             "public static void restore() {" +
             "  try {" +
@@ -2533,6 +2646,7 @@ public class Patcher {
             "    catch (Throwable t) { debugPage = 0; }" +
             "    if (debugPage < 0) { debugPage = 0; }" +
             "    debug = debugPage > 0;" +
+            "    hidden = \"1\".equals(in.getProperty(\"hidden\", \"0\"));" +
             "    runs.clear();" +
             "    String was = in.getProperty(\"parties\", \"\");" +
             "    if (was.length() > 0) {" +
@@ -2594,6 +2708,93 @@ public class Patcher {
             "  } catch (Throwable t) { return null; }" +
             "}", c));
 
+        // a clockwise circle arrow as {dx, dy, size} squares around the cell's centre
+        c.addField(CtField.make("public static int[] arrow = null;", c));
+        c.addMethod(CtNewMethod.make(
+            "public static int[] glyph() {" +
+            "  if (arrow != null) { return arrow; }" +
+            "  java.util.LinkedHashSet dots = new java.util.LinkedHashSet();" +
+            "  double rad = 5.5;" +
+            "  int a = 90;" +
+            "  while (a <= 330) {" +
+            "    double t = Math.toRadians((double) a);" +
+            "    dots.add(new java.awt.Point((int) Math.round(rad * Math.cos(t)) - 1," +
+            "        (int) Math.round(rad * Math.sin(t)) - 1));" +
+            "    a = a + 8;" +
+            "  }" +
+            "  java.util.ArrayList out = new java.util.ArrayList();" +
+            "  java.util.Iterator it = dots.iterator();" +
+            "  while (it.hasNext()) {" +
+            "    java.awt.Point p = (java.awt.Point) it.next();" +
+            "    out.add(new int[] { p.x, p.y, 2 });" +
+            "  }" +
+            "  dots.clear();" +
+            "  double t = Math.toRadians(90.0);" +
+            "  double ex = rad * Math.cos(t);" +
+            "  double ey = rad * Math.sin(t);" +
+            "  double along = 0.0;" +
+            "  while (along <= 3.5) {" +
+            "    double half = 3.0 * (1.0 - along / 3.5);" +
+            "    double across = -half;" +
+            "    while (across <= half) {" +
+            "      double px = ex + Math.sin(t) * along + Math.cos(t) * across;" +
+            "      double py = ey - Math.cos(t) * along + Math.sin(t) * across;" +
+            "      dots.add(new java.awt.Point((int) Math.floor(px), (int) Math.floor(py)));" +
+            "      across = across + 0.5;" +
+            "    }" +
+            "    along = along + 0.5;" +
+            "  }" +
+            "  it = dots.iterator();" +
+            "  while (it.hasNext()) {" +
+            "    java.awt.Point p = (java.awt.Point) it.next();" +
+            "    out.add(new int[] { p.x, p.y, 1 });" +
+            "  }" +
+            "  int[] flat = new int[out.size() * 3];" +
+            "  int i = 0;" +
+            "  while (i < out.size()) {" +
+            "    int[] one = (int[]) out.get(i);" +
+            "    flat[i * 3] = one[0];" +
+            "    flat[i * 3 + 1] = one[1];" +
+            "    flat[i * 3 + 2] = one[2];" +
+            "    i = i + 1;" +
+            "  }" +
+            "  arrow = flat;" +
+            "  return flat;" +
+            "}", c));
+
+        // a button's backdrop; hands back the ink to draw its glyph in
+        c.addMethod(CtNewMethod.make(
+            "public " + Discovery.COLOR4F + " cell(" + Discovery.RENDERER + " r, int x, int y, boolean lit) {" +
+            "  if (lit) {" +
+            "    this.panel.quad(r, x, y, " + BOX + ", " + BOX + ", shade(1.0f, 1.0f, 1.0f, 0.12f), this._alpha);" +
+            "    return shade(1.0f, 1.0f, 1.0f, 0.95f);" +
+            "  }" +
+            "  return shade(0.72f, 0.77f, 0.86f, 0.55f);" +
+            "}", c));
+
+        // 1 reset, 2 hide, 3 show (the whole tab while hidden), 0 none
+        c.addMethod(CtNewMethod.make(
+            "public int iconAt(int x, int y) {" +
+            "  if (" + MAIN + ".hidden) {" +
+            "    return x >= 0 && y >= 0 && x < this.getWidth() && y < this.getHeight() ? 3 : 0;" +
+            "  }" +
+            "  int h = this.getHeight();" +
+            "  int w = this.getWidth();" +
+            "  if (y < h - " + PAD + " - " + BOX + " || y >= h - " + PAD + ") { return 0; }" +
+            "  int hx = w - " + PAD + " - " + BOX + ";" +
+            "  if (x >= hx && x < hx + " + BOX + ") { return 2; }" +
+            "  if (x >= hx - " + BOX + " && x < hx) { return 1; }" +
+            "  return 0;" +
+            "}", c));
+
+        c.addMethod(CtNewMethod.make(
+            "public int pointed() {" +
+            "  " + d.rootClass + " root = this.getRoot();" +
+            "  if (root == null) { return 0; }" +
+            "  return this.iconAt(root.getMouseX() - this.getAbsoluteX()," +
+            "      root.getMouseY() - this.getAbsoluteY());" +
+            "}", c));
+
         c.addMethod(CtNewMethod.make(
             "public int lines() { return this.showing + 1 + this.debugShowing; }", c));
 
@@ -2605,22 +2806,26 @@ public class Patcher {
 
         c.addMethod(CtNewMethod.make(
             "protected " + d.dimensionClass + " computePreferredSize(int hintw, int hinth) {" +
+            "  if (" + MAIN + ".hidden) { return new " + d.dimensionClass + "(" + TAB + ", " + TAB + "); }" +
             "  int tall = " + PAD + " * 2 + " + LINE + " + this.lines() * " + LINE + ";" +
             "  return new " + d.dimensionClass + "(" + WIDTH + " + " + PAD + " * 2, tall);" +
             "}", c));
 
         c.addMethod(CtNewMethod.make(
             "protected void layout() {" +
+            "  boolean open = !" + MAIN + ".hidden;" +
+            "  if (this.header.isVisible() != open) { this.header.setVisible(open); }" +
+            "  if (this.footer.isVisible() != open) { this.footer.setVisible(open); }" +
             "  int w = this.getWidth() - " + PAD + " * 2;" +
             "  int top = this.getHeight() - " + PAD + " - " + LINE + ";" +
             "  " + MAIN + ".measurePad(this.header);" +
             "  int edge = " + PAD + " - " + MAIN + ".padW;" +
-            "  this.header.setBounds(edge, top + " + TEXT_LIFT + ", w + " + MAIN + ".padW," +
-            "      " + LINE + ");" +
+            "  this.header.setBounds(edge, top + " + TEXT_LIFT + ", w + " + MAIN + ".padW" +
+            "      - " + BOX + " * 2, " + LINE + ");" +
             "  int at = 0;" +
             "  while (at < this.rows.size()) {" +
             "    " + ROW + " row = (" + ROW + ") this.rows.get(at);" +
-            "    boolean on = at < this.showing;" +
+            "    boolean on = open && at < this.showing;" +
             "    if (row.isVisible() != on) { row.setVisible(on); }" +
             "    if (on) {" +
             "      row.setBounds(" + PAD + ", top - (at + 1) * " + LINE + ", w, " + LINE + ");" +
@@ -2632,7 +2837,7 @@ public class Patcher {
             "  int k = 0;" +
             "  while (k < this.debugLabels.size()) {" +
             "    " + Discovery.LABEL + " line = (" + Discovery.LABEL + ") this.debugLabels.get(k);" +
-            "    boolean on = k < this.debugShowing;" +
+            "    boolean on = open && k < this.debugShowing;" +
             "    if (line.isVisible() != on) { line.setVisible(on); }" +
             "    if (on) {" +
             "      line.setBounds(edge, foot - (k + 1) * " + LINE + ", w + " + MAIN + ".padW," +
@@ -2647,6 +2852,30 @@ public class Patcher {
             "  int w = this.getWidth();" +
             "  int h = this.getHeight();" +
             "  this.panel.quad(r, 0, 0, w, h, shade(0.04f, 0.05f, 0.07f, 0.78f), this._alpha);" +
+            "  int lit = this.pointed();" +
+            "  if (" + MAIN + ".hidden) {" +
+            "    this.cell(r, " + PAD + ", " + PAD + ", lit == 3);" +
+            "    int x = " + PAD + " + (" + BOX + " - 13) / 2;" +
+            "    int y = " + PAD + " + (" + BOX + " - 12) / 2;" +
+            "    this.panel.quad(r, x, y, 3, 6, seatColour(0), this._alpha);" +
+            "    this.panel.quad(r, x + 5, y, 3, 12, seatColour(1), this._alpha);" +
+            "    this.panel.quad(r, x + 10, y, 3, 9, seatColour(2), this._alpha);" +
+            "    super.renderComponent(r);" +
+            "    return;" +
+            "  }" +
+            "  int cy = h - " + PAD + " - " + BOX + ";" +
+            "  int hx = w - " + PAD + " - " + BOX + ";" +
+            "  int rx = hx - " + BOX + ";" +
+            "  " + Discovery.COLOR4F + " ink = this.cell(r, rx, cy, lit == 1);" +
+            "  int[] pts = glyph();" +
+            "  int g = 0;" +
+            "  while (g < pts.length) {" +
+            "    this.panel.quad(r, rx + " + (BOX / 2) + " + pts[g], cy + " + (BOX / 2) + " + pts[g + 1]," +
+            "        pts[g + 2], pts[g + 2], ink, this._alpha);" +
+            "    g = g + 3;" +
+            "  }" +
+            "  ink = this.cell(r, hx, cy, lit == 2);" +
+            "  this.panel.quad(r, hx + " + (BOX / 2) + " - 5, cy + " + (BOX / 2) + " - 1, 10, 2, ink, this._alpha);" +
             "  this.panel.quad(r, 0, h - 2, w, 2," +
             "      shade(0.55f, 0.62f, 0.75f, 0.30f), this._alpha);" +
             "  int under = h - " + PAD + " - " + LINE + " - 1;" +
@@ -2726,7 +2955,12 @@ public class Patcher {
             "      ((" + ROW + ") this.rows.get(i)).gauge();" +
             "      i = i + 1;" +
             "    }" +
-            "    if (this.hover) {" +
+            "    int lit = this.hover ? this.pointed() : 0;" +
+            "    if (lit == 1) {" +
+            "      this.footer.setText(" + MAIN + ".padded(\"reset: start the whole run over\"));" +
+            "    } else if (lit == 2) {" +
+            "      this.footer.setText(" + MAIN + ".padded(\"hide the meter (it keeps counting)\"));" +
+            "    } else if (this.hover) {" +
             "      this.footer.setText(" + MAIN + ".padded(\"left: \" + " + MAIN + ".nextMode()" +
             "          + \"      right: \" + " + MAIN + ".nextSpan()));" +
             "    } else {" +
@@ -2793,6 +3027,60 @@ public class Patcher {
     }
 
     private static void fillWindowGlue(Discovery.Discovered d, CtClass c) throws Exception {
+        // in mission lobbies the scene's click catcher lands over the meter and takes its clicks;
+        // only while the mouse is on the meter, lift it just above whatever is taking them
+        c.addMethod(CtNewMethod.make(
+            "public static void unblock() {" +
+            "  try {" +
+            "    if (meter == null) { return; }" +
+            "    " + d.windowClass + " mine = (" + d.windowClass + ") meter;" +
+            "    " + d.rootClass + " root = mine.getRoot();" +
+            "    if (root == null) { return; }" +
+            "    int mx = root.getMouseX();" +
+            "    int my = root.getMouseY();" +
+            "    if (mine.getHitComponent(mx, my) == null) { return; }" +
+            "    if (fHover == null) { fHover = grab(root.getClass(), \"_hcomponent\"); }" +
+            "    Object over = fHover.get(root);" +
+            "    if (over == null) { return; }" +
+            // getWindow() is protected on components
+            "    if (mWindowOf == null) {" +
+            "      mWindowOf = Class.forName(\"" + d.componentClass + "\").getDeclaredMethod(\"getWindow\", new Class[0]);" +
+            "      mWindowOf.setAccessible(true);" +
+            "    }" +
+            "    " + d.windowClass + " theirs = (" + d.windowClass + ") mWindowOf.invoke(over, new Object[0]);" +
+            "    if (theirs == null || theirs == mine) { return; }" +
+            // the scene view's own click catcher is a full-screen modal on our layer; we sit
+            // above it on most floors, but lobbies add it after the meter. real dialogs aren't
+            // full-screen, and get their clicks through a child component
+            "    boolean world = over == theirs" +
+            "        && theirs.getWidth() >= root.getDisplayWidth()" +
+            "        && theirs.getHeight() >= root.getDisplayHeight();" +
+            "    if (theirs.isModal() && !world || theirs.getLayer() != mine.getLayer()) {" +
+            "      return;" +
+            "    }" +
+            "    if (fWindows == null) { fWindows = grab(root.getClass(), \"_windows\"); }" +
+            "    java.util.List all = (java.util.List) fWindows.get(root);" +
+            "    int at = all.indexOf(mine);" +
+            "    int to = all.indexOf(theirs);" +
+            "    if (at < 0 || to <= at) { return; }" +
+            "    all.remove(at);" +
+            "    all.add(to, mine);" +
+            "    if (mHover == null) {" +
+            "      Class on = root.getClass();" +
+            "      while (on != null && mHover == null) {" +
+            "        try {" +
+            "          mHover = on.getDeclaredMethod(\"updateHoverComponent\"," +
+            "              new Class[] { Integer.TYPE, Integer.TYPE });" +
+            "          mHover.setAccessible(true);" +
+            "        } catch (NoSuchMethodException e) { on = on.getSuperclass(); }" +
+            "      }" +
+            "    }" +
+            "    if (mHover != null) {" +
+            "      mHover.invoke(root, new Object[] { new Integer(mx), new Integer(my) });" +
+            "    }" +
+            "  } catch (Throwable t) { }" +
+            "}", c));
+
         c.addMethod(CtNewMethod.make(
             "public static void open() {" +
             "  try {" +
@@ -2817,6 +3105,10 @@ public class Patcher {
             "    Object now = boss == null ? null" +
             "        : ((" + d.dirBaseClass + ") boss)." + d.currentObjMethod + "();" +
             "    if (now == null) {" +
+            // only forget the party after the handover, but stop showing it straight away
+            "      if (meter != null && ((" + d.windowClass + ") meter).isVisible()) {" +
+            "        ((" + d.windowClass + ") meter).setVisible(false);" +
+            "      }" +
             "      if (parted == 0L) { parted = System.currentTimeMillis(); }" +
             "      if (System.currentTimeMillis() - parted > " + HANDOVER + ") { leave(); }" +
             "      return;" +
@@ -2829,7 +3121,11 @@ public class Patcher {
             "    away = 0.0f;" +
             "    if (meter != null && !((" + d.windowClass + ") meter).isAdded()) { meter = null; }" +
             "    if (meter == null) { open(); }" +
+            "    if (meter != null && !((" + d.windowClass + ") meter).isVisible()) {" +
+            "      ((" + d.windowClass + ") meter).setVisible(true);" +
+            "    }" +
             "    if (meter != null) { ((" + METER + ") meter).refresh(); }" +
+            "    unblock();" +
             "  } catch (Throwable t) { }" +
             "}", c));
 
@@ -2849,6 +3145,7 @@ public class Patcher {
         c.addMethod(CtNewMethod.make(
             "public static void everyBeat() {" +
             "  indexStep();" +
+            "  findHeads();" +
             "  beat();" +
             "}", c));
 
@@ -2892,17 +3189,13 @@ public class Patcher {
 
         c.addMethod(CtNewMethod.make(
             "public void tick(float dt) {" +
+            "  " + MAIN + ".watchHeads();" +
             "  " + MAIN + ".sweep();" +
             "  this.since = this.since + dt;" +
             "  if (this.since < 0.25f) { return; }" +
             "  this.since = 0.0f;" +
             "  " + MAIN + ".everyBeat();" +
             "}", c));
-    }
-
-    private static void hookSprite(CtClass spriteCt) throws Exception {
-        spriteCt.getMethod("remove", "(I)V").insertAfter(
-            "try { " + MAIN + ".headGone(this, $1); } catch (Throwable t) { }");
     }
 
     private static void hookDirector(Discovery.Discovered d, CtClass dirCt) throws Exception {
